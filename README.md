@@ -15,8 +15,18 @@ extensively documented via comment lines; indeed the library modules can be used
 
 The following illustrations are contained within the project:
 
-* a simple *person* class, to introduce OE4OOP
-* a *soldier* class, an extension of *person*, to illustate inheritance
+1 a simple *person* class, to introduce OE4OOP
+2 a *soldier* class, an extension of *person*, to illustate inheritance
+3 a *shapes* class, to illustrate a base class and overriding - with child classes:
+    * circle
+    * rectangle
+    * triangle
+
+(Note that this third illustration is all embodied in a single library module, within which several class types are defined. The same effects and relationships could have been achieved using single-class modules, but certain differences in approach would be necessary.)
+
+The core idea in all these examples, however, is that an entity's data is hidden by restricting scope (to 'local') and providing only an integer handle, through which accessors, mutators and information routines operate. The structure to enable this approach has, in all these cases, been built within the operating modules. There are, however, cases where the equivalent handle-based linkage is already provided; access to C-language library functions being the most obvious. So, as a final example, this project offers:
+
+4 a set of classes built to effectively interface with the IUP GUI toolkit. 
 
 ## Dot notation
 
