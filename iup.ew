@@ -1,0 +1,364 @@
+--------------------------------------------------------------------------------
+-- OE4OOP/iup.ew
+--------------------------------------------------------------------------------
+-- Notes:
+--
+--* This module incorporates a system of embedded documentation.
+--* Each code block has its own supporting explanation.
+--* For convenience all routines are defined as functions.
+--------------------------------------------------------------------------------
+--/*
+--= Library: iup.ew
+--Description: IUP GUI controls interface library using the OE4OOP approach
+------
+--[[[Version: 4.0.5.0
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.10.29
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* created
+--* ##setAttribute## defined
+--* ##IHandle## defined
+--* ##getAttribute## defined
+--* **dialog** defined
+--* ##Dialog## defined
+--* ##show## defined
+--* **control** defined
+--* ##Button## defined
+--* **container** defined
+--* ##Hbox## defined
+--* ##Vbox## defined
+--* ##Label## defined
+--* ##setCallback## defined
+--* ##Icallback## defined
+--* **pdialog** defined
+--* ##popup## defined
+--* ##ColorDlg## defined
+--* ##hide## defined
+--* ##error## defined
+--* ##Frame## defined
+--* ##Fill## defined
+--* ##Space## defined
+--* ##Text## defined
+--* ##Toggle## defined
+--
+--==Open Euphoria for OOP (OE4OOP) library: iup
+--
+-- The purpose of this library module is:
+--
+--* to define the 'iup' control classes for designing IUP applications
+--
+-- The library contains the following types:
+--
+--* **Ihandle**
+--
+-- To invoke this library add:
+-- <eucode>include iup.ew</eucode>
+-- to the calling module (library or application).
+------
+--*/
+--------------------------------------------------------------------------------
+--/*
+--==Interface
+--*/
+--------------------------------------------------------------------------------
+--/*
+--=== Includes
+--*/
+--------------------------------------------------------------------------------
+public include iup.e -- for IUP, 'Close', 'Loop', 'Open'
+--------------------------------------------------------------------------------
+--/*
+------
+--/*
+--------------------------------------------------------------------------------
+--/*
+--=== "Class" Ihandle
+--*/
+--------------------------------------------------------------------------------
+type Ihandle(atom this) --> handle to Ihandle structure in IUP
+    return this >= 0
+end type
+--------------------------------------------------------------------------------
+--/*
+--=== "Methods"
+--
+-- The function names are self-explanatory.
+-- A simple code is used to indicate the return value and its type
+--*/
+--------------------------------------------------------------------------------
+--/*
+--==== Accessor
+--*/
+--------------------------------------------------------------------------------
+export function getAttribute(Ihandle this, string attrib) -- [string] attribute value
+    crid ga = Crid("+IupGetAttribute", IUP, {C_POINTER, C_STRING}, C_STRING)
+    return peek_string(c_func(ga, {this, allocate_string(attrib)}))
+end function
+--------------------------------------------------------------------------------
+--/*
+--==== Mutator
+--*/
+--------------------------------------------------------------------------------
+export function hide(Ihandle this) -- [integer] IUP_NOERROR
+    crid h = Crid("+IupHide", IUP, {C_POINTER}, C_INT)
+    return c_func(h, {this})
+end function
+--------------------------------------------------------------------------------
+export function setAttribute(Ihandle this, string attrib, string val) -- void
+    crid sa = Crid("+IupSetAttribute", IUP, {C_POINTER, C_STRING, C_STRING})
+    c_proc(sa, {this, allocate_string(attrib), allocate_string(val)})
+    return VOID
+end function
+--------------------------------------------------------------------------------
+--/*
+--==== Constructor
+--*/
+--------------------------------------------------------------------------------
+export function IHandle(Ihandle base, string attribs) -- [Ihandle] structure with given attribute values
+    crid sa = Crid("+IupSetAttributes", IUP, {C_POINTER, C_STRING}, C_POINTER)
+    return c_func(sa, {base, allocate_string(attribs)})
+end function
+--------------------------------------------------------------------------------
+--/*
+------
+--/*
+--------------------------------------------------------------------------------
+--/*
+--=== "Class" dialog
+--*/
+--------------------------------------------------------------------------------
+export type dialog(Ihandle this) --> handle to Dialog structure in IUP
+    return TRUE -- inheritance
+end type
+--------------------------------------------------------------------------------
+--/*
+--=== "Methods"
+--
+-- The function names are self-explanatory.
+-- A simple code is used to indicate the return value and its type
+--*/
+--------------------------------------------------------------------------------
+--/*
+--==== Constructor
+--*/
+--------------------------------------------------------------------------------
+export function Dialog(Ihandle child = NULL) -- [dialog] pointer to Dialog structure
+    crid d = Crid("+IupDialog", IUP, {C_POINTER}, C_POINTER)
+    return c_func(d, {child})
+end function
+--------------------------------------------------------------------------------
+--/*
+--==== Action method
+--*/
+--------------------------------------------------------------------------------
+export function show(dialog this, integer x = 0, integer y = 0) -- [integer] IUP_NOERROR|IUP_ERROR
+    if x > 0 or y > 0 then
+        crid sxy = Crid("+IupShowXY", IUP, {C_POINTER, C_INT, C_INT}, C_INT)
+        return c_func(sxy, {this, x, y})
+    else
+        crid s = Crid("+IupShow", IUP, {C_POINTER}, C_INT)
+        return c_func(s, {this})
+    end if
+end function
+--------------------------------------------------------------------------------
+--/*
+--==== Reporting method
+--*/
+--------------------------------------------------------------------------------
+export function error(dialog this = NULL, string message) -- void - issues error message
+    crid em = Crid("+IupMessageError", IUP, {C_POINTER, C_STRING})
+    c_proc(em, {this, allocate_string(message)})
+    return VOID
+end function
+--------------------------------------------------------------------------------
+--/*
+------
+--/*
+--------------------------------------------------------------------------------
+--/*
+--=== "Class" pdialog
+--*/
+--------------------------------------------------------------------------------
+export type pdialog(Ihandle this) --> handle to a predefined dialog structure in IUP
+    return TRUE -- inheritance
+end type
+--------------------------------------------------------------------------------
+--/*
+--=== "Methods"
+--
+-- The function names are self-explanatory.
+-- A simple code is used to indicate the return value and its type
+--*/
+--------------------------------------------------------------------------------
+--/*
+--==== Constructors
+--*/
+--------------------------------------------------------------------------------
+export function ColorDlg() -- [pdialog] handle to a pre-defined IUP structure
+    crid cd = Crid("+IupColorDlg", IUP, {}, C_POINTER)
+    return c_func(cd, {})
+end function
+--------------------------------------------------------------------------------
+--/*
+--==== Action method
+--*/
+--------------------------------------------------------------------------------
+export function popup(pdialog this, integer x = 0, integer y = 0) -- [integer] IUP_INVALID|IUP_NOERROR|IUP_ERROR
+    crid p = Crid("+IupPopup", IUP, {C_POINTER, C_INT, C_INT}, C_INT)
+    return c_func(p, {this, x, y})
+end function
+--------------------------------------------------------------------------------
+--/*
+------
+--/*
+--------------------------------------------------------------------------------
+--/*
+--=== "Class" control
+--*/
+--------------------------------------------------------------------------------
+export type control(Ihandle this) --> handle to control structure in IUP
+    return TRUE -- inheritance
+end type
+--------------------------------------------------------------------------------
+--/*
+--=== "Methods"
+--
+-- The function names are self-explanatory.
+-- A simple code is used to indicate the return value and its type
+--*/
+--------------------------------------------------------------------------------
+export function setCallback(control this, string action, atom rid) -- [crid] the previously allocated callback
+    crid sc = Crid("+IupSetCallback", IUP, {C_POINTER, C_STRING, C_INT}, C_INT)
+    return c_func(sc, {this, allocate_string(action), rid})
+end function
+--------------------------------------------------------------------------------
+--/*
+--==== Constructors
+--*/
+--------------------------------------------------------------------------------
+export function Button(object name = NULL, object action = NULL) -- [control] handle to IUP Button structure
+    crid b = Crid("+IupButton", IUP, {C_STRING, C_STRING}, C_POINTER)
+    if not atom(name) then name = allocate_string(name) end if
+    if not atom(action) then action = allocate_string(action) end if
+    return c_func(b, {name, action})
+end function
+--------------------------------------------------------------------------------
+export function Label(object name = NULL) -- [control] handle to IUP Label structure
+    crid l = Crid("+IupLabel", IUP, {C_STRING}, C_POINTER)
+    if not atom(name) then name = allocate_string(name) end if
+    return c_func(l, {name})
+end function
+--------------------------------------------------------------------------------
+export function Text(object action = NULL) -- [control] handle to IUP Text structure
+    crid t = Crid("+IupText", IUP, {C_STRING}, C_POINTER)
+    if not atom(action) then action = allocate_string(action) end if
+    return c_func(t, {action})
+end function
+--------------------------------------------------------------------------------
+export function Toggle(object name = NULL, object action = NULL) -- [control] handle to IUP Toggle/Checkbox structure
+    crid t = Crid("+IupToggle", IUP, {C_STRING, C_STRING}, C_POINTER)
+    if not atom(name) then name = allocate_string(name) end if
+    if not atom(action) then action = allocate_string(action) end if
+    return c_func(t, {name, action})
+end function
+--------------------------------------------------------------------------------
+--/*
+------
+--/*
+--------------------------------------------------------------------------------
+--/*
+--=== "Class" container
+--*/
+--------------------------------------------------------------------------------
+export type container(Ihandle this) --> handle to container structure in IUP
+    return TRUE -- inheritance
+end type
+--------------------------------------------------------------------------------
+--/*
+--=== "Methods"
+--
+-- The function names are self-explanatory.
+-- A simple code is used to indicate the return value and its type
+--*/
+--------------------------------------------------------------------------------
+--/*
+--==== Constructors
+--*/
+--------------------------------------------------------------------------------
+export function Frame(Ihandle child = NULL) -- [container] handle to the IUP Frame structure
+    crid f = Crid("+IupFrame", IUP, {C_POINTER}, C_POINTER)
+    return c_func(f, {child})
+end function
+--------------------------------------------------------------------------------
+export function Hbox(sequence children = {}) -- [container] handle to IUP Hbox structure
+    integer l = length(children)
+    crid hb = Crid("+IupHbox", IUP, repeat(C_POINTER, l+1), C_POINTER)
+    return c_func(hb, children & NULL)
+end function
+--------------------------------------------------------------------------------
+export function Vbox(sequence children = {}) -- [container] handle to IUP Vbox structure
+    integer l = length(children)
+    crid hb = Crid("+IupVbox", IUP, repeat(C_POINTER, l+1), C_POINTER)
+    return c_func(hb, children & NULL)
+end function
+--------------------------------------------------------------------------------
+--/*
+------
+--/*
+--------------------------------------------------------------------------------
+--/*
+--=== "Class" void - the set of void elements
+--*/
+--------------------------------------------------------------------------------
+--/*
+--=== "Methods"
+--
+-- The function names are self-explanatory.
+-- A simple code is used to indicate the return value and its type
+--*/
+--------------------------------------------------------------------------------
+--/*
+--==== Constructors
+--*/
+--------------------------------------------------------------------------------
+export function Fill() -- [lhandle] handle to a void element
+    crid f = Crid("+IupFill", IUP, {}, C_POINTER)
+    return c_func(f, {})
+end function
+--------------------------------------------------------------------------------
+export function Space() -- [lhandle] handle to a void element
+    crid s = Crid("+IupSpace", IUP, {}, C_POINTER)
+    return c_func(s, {})
+end function
+--------------------------------------------------------------------------------
+--/*
+------
+--/*
+--------------------------------------------------------------------------------
+--/*
+--==== Working routine - simulating casting in C
+--*/
+--------------------------------------------------------------------------------
+export function Icallback(string name, atom rid = routine_id(name)) -- converts a routine_id to the appropriate form
+    return call_back({'+', rid})
+end function
+--------------------------------------------------------------------------------
+--/*
+--==== IUP constants
+--*/
+--------------------------------------------------------------------------------
+--/*
+--==== Event signals
+--*/
+--------------------------------------------------------------------------------
+export enum CONTINUE = -4, CLOSE, DEFAULT, IGNORE
+--------------------------------------------------------------------------------
+--/*
+------
+--/*
+--------------------------------------------------------------------------------
+-- Previous versions
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
