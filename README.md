@@ -4,7 +4,7 @@
 
 This project considers how the principles of Object-Oriented Programming (OOP) can be applied/interpreted within the Open Euphoria (OE) environment.
 
-The most important point is that OE4OOP **doesn't require** any supplementary libraries. It illustrates an *approach* to delivering the foundations of OOP in a systemmatic and consistent fashion.
+The most important point is that OE4OOP **doesn't require** any supplementary libraries. It illustrates an *approach* to delivering the foundations of OOP in a systematic and consistent fashion.
 
 ## The project described
 
@@ -26,11 +26,14 @@ The following illustrations are contained within the project:
 
 The core idea in all these examples, however, is that an entity's data is hidden by restricting scope (to 'local') and providing only an integer handle, through which accessors, mutators and information routines operate. The structure to enable this approach has, in all these cases, been built within the operating modules. There are, however, cases where the equivalent handle-based linkage is already provided; access to C-language library functions being the most obvious. So, as a final example, this project offers:
 
-4. a set of classes built to effectively interface with the IUP GUI toolkit. 
+4. (for consistency) a library module containing "classes" for handling C-language library files
+5. a set of classes built to interface with the C-language version of the IUP GUI toolkit.
 
 ## Dot notation
 
-Dot notation is not at present provided in OE, but OE4OOP offers an equivalent approach: the first parameter of every routine (qua "method") call is of the *type* (qua "class") instance. Included in the project, however, is a simple example of a pre-processor which enables applications (extension *dex*) cast in dot notation to be run in OE.
+Dot notation is not at present provided in OE, but OE4OOP offers an equivalent approach: the first parameter of every routine (qua "method") call is of the *type* (qua "class") instance.
+
+Included in the project, however, is a first-base pre-processor which enables applications (extension *dex*) cast in dot notation to be run in OE.
 
 ## Feedback
 
