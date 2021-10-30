@@ -11,20 +11,14 @@
 --= Library: iup.e
 --Description: IUP GUI interface library using the OE4OOP approach
 ------
---[[[Version: 4.0.5.0
+--[[[Version: 4.0.5.1
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.10.29
+--Date: 2021.10.30
 --Status: incomplete, but extensible; operational
 --Changes:]]]
---* created
---* **iup** defined
---* ##Iup## defined
---* ##Close## defined
---* ##Open## defined
---* ##Loop## defined
---* ##Message## defined
---* ##Version## defined
+--* corrected error in abort action
+--* added caution to documentation
 --
 --==Open Euphoria for OOP (OE4OOP) library: iup
 --
@@ -79,7 +73,7 @@ export constant VOID = 0
 --*/
 --------------------------------------------------------------------------------
 type iup(clib this) --> OE-generated handle to a shared IUP library file
-    return TRUE-- inheritance
+    return TRUE -- inheritance
 end type
 --------------------------------------------------------------------------------
 --/*
@@ -119,10 +113,12 @@ end function
 --------------------------------------------------------------------------------
 --/*
 --=== Defined Instance
+--
+-- The library may not be found if the paths are not set appropriately.
 --*/
 --------------------------------------------------------------------------------
 public clib IUP = Iup({"iup.dll", "libiup.so"})
-if IUP = -1 then
+if IUP < 1 then
     puts(1, "!!! IUP library not found !!!\n*** ABORTING ***") abort(0)
 end if
 --------------------------------------------------------------------------------
@@ -155,4 +151,18 @@ end function
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+--[[[Version: 4.0.5.0
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.10.29
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* created
+--* **iup** defined
+--* ##Iup## defined
+--* ##Close## defined
+--* ##Open## defined
+--* ##Loop## defined
+--* ##Message## defined
+--* ##Version## defined
 --------------------------------------------------------------------------------
