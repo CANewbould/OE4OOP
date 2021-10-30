@@ -33,7 +33,7 @@ The core idea in all these examples, however, is that an entity's data is hidden
 
 Dot notation is not at present provided in OE, but OE4OOP offers an equivalent approach: the first parameter of every routine (qua "method") call is of the *type* (qua "class") instance.
 
-Included in the project, however, is a first-base pre-processor which enables applications (extension *dex*) cast in dot notation to be run in OE.
+Included in the project, however, is a first-base pre-processor which enables applications (extension *dex* or *dexw*) cast in dot notation to be run in OE. The *person* example has been re-cast as *person.dex* and is included in this project.
 
 ## Feedback
 
