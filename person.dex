@@ -1,0 +1,37 @@
+--------------------------------------------------------------------------------
+-- person.dex
+--------------------------------------------------------------------------------
+-- Testbed for the "OOP" implementation of OE (OE4OOP)
+-- augmented by dot-notation, delivered by pre-processor 'dot.ex'
+--------------------------------------------------------------------------------
+--Version: 4.0.5.0
+--Date: 2021.10.27
+--Author: C A Newbould
+--Status: operational; complete
+--Changes:
+--* created
+--------------------------------------------------------------------------------
+-- Interface
+--------------------------------------------------------------------------------
+include person.e -- for class definition
+include std/console.e -- for 'display'
+--------------------------------------------------------------------------------
+-- Support routine
+--------------------------------------------------------------------------------
+procedure show(person p)
+    display("[1] was born on [2]; so s/he is [3] years old",
+                {getName(p),
+                 getDob(p),
+                 getAge(p)})
+end procedure
+--------------------------------------------------------------------------------
+-- Illustration
+--------------------------------------------------------------------------------
+person fred = Person("Fred Smith", {16, 5, 1943})
+fred.show()
+person bill = Person("William Jones", {18, 11, 1982})
+bill.changeName("Wm Ewart Jones")
+bill.show()
+person liz = Person("Elizabeth Taylor", {27, 2, 1932})
+liz.show()
+--------------------------------------------------------------------------------
