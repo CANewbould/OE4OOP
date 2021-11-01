@@ -11,14 +11,14 @@
 --= Library: iup.e
 --Description: IUP GUI interface library using the OE4OOP approach
 ------
---[[[Version: 4.0.5.1
+--[[[Version: 4.0.5.2
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.10.30
+--Date: 2021.11.01
 --Status: incomplete, but extensible; operational
 --Changes:]]]
---* corrected error in abort action
---* added caution to documentation
+--* ##GetFile## defined
+--* ##Alarm## defined
 --
 --==Open Euphoria for OOP (OE4OOP) library: iup
 --
@@ -130,10 +130,35 @@ end if
 --==== Reporting Routines
 --*/
 --------------------------------------------------------------------------------
+public function Alarm(string t, string m, string b1, object b2 = NULL, object b3 = NULL) -- [integer] number of button selected (1-based)
+    crid a = Crid("+IupAlarm", IUP, {C_STRING, C_STRING, C_STRING, C_POINTER, C_POINTER}, C_INT)
+    t = allocate_string(t)
+    m = allocate_string(m)
+    b1 = allocate_string(b1)
+    if sequence(b2) then
+        allocate_string(b2)
+        if sequence(b3) then b3 = allocate_string(b3) end if
+    end if
+    return c_func(a, {t, m, b1, b2, b3})
+end function
+--------------------------------------------------------------------------------
 public function Message(string caption, string message) -- void - displays a modal message-box
     crid m = Crid("+IupMessage", IUP, {C_STRING, C_STRING})
     c_proc(m, {allocate_string(caption), allocate_string(message)})
     return VOID
+end function
+--------------------------------------------------------------------------------
+--/*
+--==== Packaged predefined Dialogs
+--*/
+--------------------------------------------------------------------------------
+public function GetFile(string filename) -- [sequence] {status-code, file-name}
+    crid gf = Crid("+IupGetFile", IUP, {C_STRING}, C_INT)
+    atom pn = allocate(4096) -- maximum allowed size
+    poke(pn, filename & NULL)
+    sequence result = {c_func(gf, {pn}), peek_string(pn)}
+    free(pn)
+    return result
 end function
 --------------------------------------------------------------------------------
 --/*
@@ -150,6 +175,15 @@ end function
 --/*
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.1
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.10.30
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* corrected error in abort action
+--* added caution to documentation
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.0
 --Euphoria Versions: 4.0.5 upwards
