@@ -11,15 +11,13 @@
 --= Library: shapes1
 --Description: a alternative approach to a collection of shape "class"es using the OE4OOP approach
 ------
---[[[Version: 4.0.5.0
+--[[[Version: 4.0.5.1
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.01
+--Date: 2021.11.09
 --Status: incomplete, but extensible; operational
 --Changes:]]]
---* copied from //shapes.e//
---* first property changed
---* introduced use of //switch//
+--* corrected documentation errors
 --
 --==Open Euphoria for OOP (OE4OOP) library: shapes
 --
@@ -138,7 +136,7 @@ end function
 --------------------------------------------------------------------------------
 -- Pointers to additional Properties
 --------------------------------------------------------------------------------
-enum RADIUS = 2 -- AREA = 1
+enum RADIUS = 2 -- TYP = 1
 --------------------------------------------------------------------------------
 --/*
 --=== "class" type
@@ -194,7 +192,7 @@ end function
 --------------------------------------------------------------------------------
 -- Pointers to additonal Properties
 --------------------------------------------------------------------------------
-enum LENGTH = 2, BREADTH -- AREA = 1
+enum LENGTH = 2, BREADTH -- TYP = 1
 --------------------------------------------------------------------------------
 --/*
 --=== "class" type
@@ -249,7 +247,7 @@ end function
 --------------------------------------------------------------------------------
 -- Pointers to additional Properties
 --------------------------------------------------------------------------------
-enum A = 2, B, C -- AREA = 1
+enum A = 2, B, C -- TYP = 1
 --------------------------------------------------------------------------------
 --/*
 --=== "class" type
@@ -305,4 +303,13 @@ end function
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+--[[[Version: 4.0.5.0
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.11.01
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* copied from //shapes.e//
+--* first property changed
+--* introduced use of //switch//
 --------------------------------------------------------------------------------
