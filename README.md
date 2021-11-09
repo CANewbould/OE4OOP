@@ -9,7 +9,7 @@ The most important point is that OE4OOP **doesn't require** any supplementary li
 ## The project described
 
 The project sets out a template, through a small number of examples. A modular approach is adopted throughout, as this seems the most educative. A "class" module (extension *e*) is created and illustrated via a corresponding example (extension *ex*). The means of establishing inheritance are exemplified. Illustrations are included of constructors, and routine overriding and overloading. Each module is
-extensively documented via comment lines; indeed the library modules can be used to generate html documentation using a [E2CR](https://sourceforge.net/projects/e2cr/) - document-extraction tool. To appreciate the approach it is more informative to study this comment than to simply run the example programs.
+extensively documented via comment lines; indeed the library modules can be used to generate html documentation using a document-extraction tool - [E2CR](https://sourceforge.net/projects/e2cr/). To appreciate the approach it is more informative to study this comment than to simply run the example programs.
 
 ### Illustrations
 
