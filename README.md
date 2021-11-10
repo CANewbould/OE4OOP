@@ -35,6 +35,16 @@ The basic principle of OE4OOP is clearly evident insofar as all these examples a
 
 `eui <projectname>.ex[w]`
 
+## General implementation
+
+Could/should this approach be more generally adopted?
+
+It is possible to argue that OE4OOP is differentially applicable depending upon the nature of the "properties" of a given case. In particular, if a "class"'s entities only ever have one (*atom*) value each, then the case for setting up a local sequence, to hold that single value, creating a pointer to that local sequence and defining accessor/mutator "method"(s), seems rather like applying a principle purely for the sake of it.
+
+As a parallel to Java, say, where is the dividing line between a primitive data type and a class? This question must be addressed if OE4OOP is to be other than a proof of concept.
+
+You can, of course, emphasise OOP further and insist that every entity *literally* holds its properties and methods inside its shell; this will inevitably result in something akin to [EuCANOOP](https://sourceforge.net/projects/eucanoop/). On the other hand, you can relax the strict scope of OOP and opt instead for an Object-Centred approach, as exemplified by [OCE](https://bitbucket.org/CANewbould/object-centred-euphoria/src/master/).
+
 ## Dot notation
 
 Dot notation is not at present provided in OE, but OE4OOP offers an equivalent approach: the first parameter of every routine (qua "method") call is of the *type* (qua "class") instance, and thus (albeit implicitly) applies to an entity.
