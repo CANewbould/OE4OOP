@@ -10,13 +10,13 @@
 --= Library: circle
 --Description: a circle "class" library using the OE4OOP approach
 ------
---[[[Version: 4.0.5.1
+--[[[Version: 4.0.5.2
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
 --Date: 2021.11.17
 --Status: incomplete, but extensible; operational
 --Changes:]]]
---* modified to allow overriding
+--* modified to allow for changes in //shape2.e//
 --
 --==Open Euphoria for OOP (OE4OOP) library: circle
 --
@@ -53,10 +53,6 @@ include std/mathcons.e -- for 'PI'
 --=== "Class" circle
 --*/
 --------------------------------------------------------------------------------
--- Pointers to additional Properties
---------------------------------------------------------------------------------
-enum RADIUS = 3
---------------------------------------------------------------------------------
 --/*
 --=== "class" type
 --
@@ -83,24 +79,30 @@ end type
 -- Area calculation
 --------------------------------------------------------------------------------
 function c_area(circle this) --> [atom] area of circle with given radius
-    sequence c = getProperties(this)
-    atom radius = c[RADIUS]
+    atom radius = getDims(this)
     return PI * radius * radius
 end function
 constant C_area = routine_id("c_area")
 --------------------------------------------------------------------------------
 function c_perimeter(circle this) --> [atom] circumference of circle with given radius
-    sequence c = getProperties(this)
-    atom radius = c[RADIUS]
+    atom radius = getDims(this)
     return 2 * PI * radius
 end function
 constant C_perimeter = routine_id("c_perimeter")
 --------------------------------------------------------------------------------
 export function Circle(atom radius) --> [circle] unique id
-    return Shape({C_area, C_perimeter, radius}) -- a serial number; index to storage
+    return Shape(radius, {C_area, C_perimeter}) -- a serial number; index to storage
 end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.1
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.11.17
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* modified to allow overriding
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.0
 --Euphoria Versions: 4.0.5 upwards
