@@ -10,13 +10,14 @@
 --Description: a testbed for the "OOP" implementation of OE (OE4OOP), based on
 -- the 'shape' "class" and its children, as defined in 'shape2.e'
 ------
---[[[Version: 4.0.5.1
+--[[[Version: 4.0.5.2
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.17
+--Date: 2021.11.22
 --Status: incomplete, but extensible; operational
 --Changes:]]]
---* added tests for ##perimeter## routines
+--* modified to reflect changes in class modules
+--* added extra commentary
 --
 --==Open Euphoria for OOP (OE4OOP) application: shapes
 --
@@ -47,14 +48,14 @@ procedure main()
     puts(1, "This little application calls the same-named functions, but "
                 & "applied to three different kinds of shape\n\n")
     circle circ = Circle(20)
-    printf(1, "The area of the circle is %.2f\n", area(circ))
-    printf(1, "The circumference of the circle is %.2f\n", perimeter(circ))
+    printf(1, "The area of the circle, with radius 20, is %.2f; ", area(circ))
+    printf(1, "with circumference %.2f\n", perimeter(circ))
     rectangle rect = Rectangle(20, 15)
-    printf(1, "The area of the rectangle is %.2f\n", area(rect))
-    printf(1, "The perimeter of the rectangle is %.2f\n", perimeter(rect))
+    printf(1, "The area of the rectangle, 20x15, is %.2f; ", area(rect))
+    printf(1, "with perimeter %.2f\n", perimeter(rect))
     triangle tri = Triangle(3, 6, 7)
-    printf(1, "The area of the triangle is %.2f\n", area(tri))
-    printf(1, "The perimeter of the triangle is %.2f\n", perimeter(tri))
+    printf(1, "The area of the triangle (3,6,7) is %.2f; ", area(tri))
+    printf(1, "with perimeter %.2f\n", perimeter(tri))
 end procedure
 --------------------------------------------------------------------------------
 -- Execution
@@ -62,6 +63,14 @@ end procedure
 main()
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.1
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.11.17
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* added tests for ##perimeter## routines
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.0
 --Euphoria Versions: 4.0.5 upwards
