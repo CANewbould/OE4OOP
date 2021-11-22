@@ -10,13 +10,13 @@
 --= Library: rectangle
 --Description: a rectangle "class" library using the OE4OOP approach
 ------
---[[[Version: 4.0.5.1
+--[[[Version: 4.0.5.2
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.17
+--Date: 2021.11.22
 --Status: incomplete, but extensible; operational
 --Changes:]]]
---* modified to allow overriding
+--* modified to allow for changes in //shape2.e//
 --
 --==Open Euphoria for OOP (OE4OOP) library: rectangle
 --
@@ -53,9 +53,9 @@ include shape2.e -- parent
 --=== "Class" rectangle
 --*/
 --------------------------------------------------------------------------------
--- Pointers to additional Properties
+-- Pointers to Dimension Elements
 --------------------------------------------------------------------------------
-enum LENGTH = 3, BREADTH
+enum LENGTH, BREADTH
 --------------------------------------------------------------------------------
 --/*
 --=== "class" type
@@ -83,22 +83,30 @@ end type
 -- Area calculation
 --------------------------------------------------------------------------------
 function r_area(rectangle this) --> [atom] area of rectangle of given dimensions
-    sequence r = getProperties(this)
+    sequence r = getDims(this)
     return r[LENGTH] * r[BREADTH]
 end function
 constant R_area = routine_id("r_area")
 --------------------------------------------------------------------------------
 function r_perimeter(rectangle this) --> [atom] perimeter of rectangle of given dimensions
-    sequence r = getProperties(this)
+    sequence r = getDims(this)
     return (r[LENGTH] + r[BREADTH]) * 2
 end function
 constant R_perimeter = routine_id("r_perimeter")
 --------------------------------------------------------------------------------
 export function Rectangle(atom len, atom breadth) --> [rectangle] unique id
-    return Shape({R_area, R_perimeter, len, breadth}) -- a serial number; index to storage
+    return Shape({len, breadth}, {R_area, R_perimeter}) -- a serial number; index to storage
 end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.1
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.11.17
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* modified to allow overriding
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.0
 --Euphoria Versions: 4.0.5 upwards
