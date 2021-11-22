@@ -10,15 +10,13 @@
 --= Library: triangle
 --Description: a triangle "class" library using the OE4OOP approach
 ------
---[[[Version: 4.0.5.0
+--[[[Version: 4.0.5.1
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.17
+--Date: 2021.11.22
 --Status: incomplete, but extensible; operational
 --Changes:]]]
---* created
---* mainly copied from shapes1.e
---* modified to allow overriding
+--* modified to allow for changes in //shape2.e//
 --
 --==Open Euphoria for OOP (OE4OOP) library: triangle
 --
@@ -56,9 +54,9 @@ include shape2.e -- parent
 --=== "Class" triangle
 --*/
 --------------------------------------------------------------------------------
--- Pointers to additional Properties
+-- Pointers to  Dimension Elements
 --------------------------------------------------------------------------------
-enum A = 3, B, C
+enum A, B, C
 --------------------------------------------------------------------------------
 --/*
 --=== "class" type
@@ -86,7 +84,7 @@ end type
 -- Area calculation
 --------------------------------------------------------------------------------
 function t_area(triangle this) --> [atom] area of triangle of given dimensions
-    sequence t = getProperties(this)
+    sequence t = getDims(this)
     -- Heron's formula
     atom a = t[A]
     atom b = t[B]
@@ -97,15 +95,24 @@ end function
 constant T_area = routine_id("t_area")
 --------------------------------------------------------------------------------
 function t_perimeter(triangle this) --> [atom] perimeter of triangle of given dimensions
-    sequence t = getProperties(this)
+    sequence t = getDims(this)
     return t[A] + t[B] + t[C]
 end function
 constant T_perimeter = routine_id("t_perimeter")
 --------------------------------------------------------------------------------
 export function Triangle(atom a, atom b, atom c) --> [triangle] unique id
-    return Shape({T_area, T_perimeter, a, b, c})
+    return Shape({a, b, c}, {T_area, T_perimeter})
 end function
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+--[[[Version: 4.0.5.0
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.11.17
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* created
+--* mainly copied from shapes1.e
+--* modified to allow overriding
 --------------------------------------------------------------------------------
