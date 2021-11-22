@@ -10,19 +10,25 @@
 --= Library: shapes2
 --Description: a alternative approach to a collection of shape "class"es using the OE4OOP approach
 ------
---[[[Version: 4.0.5.3
+--[[[Version: 4.0.5.4
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.17
+--Date: 2021.11.22
 --Status: incomplete, but extensible; operational
 --Changes:]]]
---* modified to work for overriding
+--* modified properties to add 'dims'
 --
 --==Open Euphoria for OOP (OE4OOP) library: shapes--
--- The base (abstract) "class" //shape// has currently two properties:
+-- The base (abstract) "class" //shape// has currently a single property:
+--
+--* dims - the dimension(s) of the shape
+--
+-- and two methods:
 --
 --* area - this holds the code representing the child's routine_id for calculating area
 --* perimeter - this holds the code representing the child's routine_id for calculating perimter
+--
+-- As the methods are to be overridden, they look more like properties.
 --
 -- The child "class"es are offered as some of many examples:
 --
@@ -64,7 +70,7 @@
 --------------------------------------------------------------------------------
 -- Pointer to Property
 --------------------------------------------------------------------------------
-enum AREA, PERIMETER
+enum DIMS, AREA, PERIMETER
 --------------------------------------------------------------------------------
 -- Data variables
 --------------------------------------------------------------------------------
@@ -94,8 +100,8 @@ end procedure
 --==== Accessor routine
 --*/
 --------------------------------------------------------------------------------
-export function getProperties(shape this)
-    return shapes[this]
+export function getDims(shape this)
+    return shapes[this][DIMS]
 end function
 --------------------------------------------------------------------------------
 --/*
@@ -115,13 +121,21 @@ end function
 --
 --*/
 --------------------------------------------------------------------------------
-export function Shape(sequence rids) --> [integer] pointer within shapes
-    shapes = append(shapes, rids)
+export function Shape(object dims, sequence rids) --> [integer] pointer within shapes
+    shapes = append(shapes, {dims} & rids)
     shp += 1
     return shp -- a serial number; index to storage
 end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.3
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.11.17
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* modified to work for overriding
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.2
 --Euphoria Versions: 4.0.5 upwards
