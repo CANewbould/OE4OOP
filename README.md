@@ -28,12 +28,14 @@ The following illustrations are contained within the project:
 
 5. yet another approach to the overriding problem, which is probably even better, and is certainly necessary where using single-class modules - see *shapes2*, and the associated *circle*, *rectangle* and *triangle* modules
 
-Here all the donkey work is done in the parent class (**shape**). Base class properties, including the routine-ids for functions to be overridden, are stored in the *shapes2* module, with a single dimensions accessor and associated Constructor. Child classes use both of these but interpret the argument to the Constructor and result from the accessor in a class-specific way, using the relevant local *enum*s to sequence the dimensions. (Note: because of the way OE processes the *include*s, the single-class module approach requires one - and only one - initialisation of the shape store and counter/pointer; hence the need to call an initialisation routine at the start of an application run.)
+Here all the donkey work is done in the parent class (*shape*). Base class properties, including the routine-ids for functions to be overridden, are stored in the *shapes2* module, with a single dimensions accessor and associated Constructor. Child classes use both of these but interpret the argument to the Constructor and result from the accessor in a class-specific way, using the relevant local *enum*s to sequence the dimensions. (Note: because of the way OE processes the *include*s, the single-class module approach requires one - and only one - initialisation of the shape store and counter/pointer; hence the need to call an initialisation routine at the start of an application run.)
+
+6. a file-handling library, based on a *file* class, reflecting fairly closely Python's file-handling methods, but utilising OE material in **std/io.e**.
 
 The core idea in all these examples, however, is that an entity's data is hidden by restricting scope (to 'local') and providing only an integer handle, through which accessors, mutators and information routines operate. The structure to enable this approach has, in all these cases, been built within the operating modules. There are, however, cases where the equivalent handle-based linkage is already provided; access to C-language library functions being the most obvious. So, as a final example, this project offers:
 
-6. (for consistency) a library module, *clib.e* containing "classes" for handling C-language library files
-7. a set of classes built to interface with the C-language version of the IUP GUI toolkit, stored in *iup.e* (for the toolkit) and *iup.ew* (for the widget classes).
+7. (for consistency) a library module, *clib.e* containing "classes" for handling C-language library files
+8. a set of classes built to interface with the C-language version of the IUP GUI toolkit, stored in *iup.e* (for the toolkit) and *iup.ew* (for the widget classes).
 
 The basic principle of OE4OOP is clearly evident insofar as all these examples are run using the normal OE interpreter call:
 
