@@ -11,14 +11,13 @@
 --= Library: iup.e
 --Description: IUP GUI interface library using the OE4OOP approach
 ------
---[[[Version: 4.0.5.2
+--[[[Version: 4.0.5.3
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.01
+--Date: 2021.12.04
 --Status: incomplete, but extensible; operational
 --Changes:]]]
---* ##GetFile## defined
---* ##Alarm## defined
+--* ##Help## defined
 --
 --==Open Euphoria for OOP (OE4OOP) library: iup
 --
@@ -142,6 +141,11 @@ public function Alarm(string t, string m, string b1, object b2 = NULL, object b3
     return c_func(a, {t, m, b1, b2, b3})
 end function
 --------------------------------------------------------------------------------
+public function Help(string url) --> [integer] success|failure
+    crid h = Crid("+IupHelp", IUP, {C_STRING}, C_INT)
+    return c_func(h, {allocate_string(url)})
+end function
+--------------------------------------------------------------------------------
 public function Message(string caption, string message) -- void - displays a modal message-box
     crid m = Crid("+IupMessage", IUP, {C_STRING, C_STRING})
     c_proc(m, {allocate_string(caption), allocate_string(message)})
@@ -175,6 +179,15 @@ end function
 --/*
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.2
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.11.01
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* ##GetFile## defined
+--* ##Alarm## defined
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.1
 --Euphoria Versions: 4.0.5 upwards
