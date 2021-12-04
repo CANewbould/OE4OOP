@@ -10,14 +10,13 @@
 --Description: a testbed for the "OOP" implementation of OE (OE4OOP), based on
 -- the 'shape' "class" and its children, as defined in 'shape2.e'
 ------
---[[[Version: 4.0.5.2
+--[[[Version: 4.0.5.3
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.22
+--Date: 2021.11.26
 --Status: incomplete, but extensible; operational
 --Changes:]]]
---* modified to reflect changes in class modules
---* added extra commentary
+--* modified initialisation to reflect change in class library
 --
 --==Open Euphoria for OOP (OE4OOP) application: shapes
 --
@@ -44,7 +43,7 @@ include triangle.e -- for 'triangle', 'Triangle'
 -- Main
 --------------------------------------------------------------------------------
 procedure main()
-    initialiseShapes() -- sets count to 0 and empties shapes store
+    Shapes:initialise() -- sets count to 0 and empties shapes store
     puts(1, "This little application calls the same-named functions, but "
                 & "applied to three different kinds of shape\n\n")
     circle circ = Circle(20)
@@ -63,6 +62,15 @@ end procedure
 main()
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.2
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.11.22
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* modified to reflect changes in class modules
+--* added extra commentary
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.1
 --Euphoria Versions: 4.0.5 upwards
