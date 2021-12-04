@@ -11,16 +11,13 @@
 --= Library: iup.ew
 --Description: IUP GUI controls interface library using the OE4OOP approach
 ------
---[[[Version: 4.0.5.1
+--[[[Version: 4.0.5.2
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.01
+--Date: 2021.12.04
 --Status: incomplete, but extensible; operational
 --Changes:]]]
---* ##alarm## defined
---* ##FileDlg## defined
---* ##MessageDlg## defined
---* ##FontDlg## defined
+--* ##ProgressDlg## defined
 --
 --==Open Euphoria for OOP (OE4OOP) library: iup
 --
@@ -126,6 +123,11 @@ end type
 export function Dialog(Ihandle child = NULL) -- [dialog] pointer to Dialog structure
     crid d = Crid("+IupDialog", IUP, {C_POINTER}, C_POINTER)
     return c_func(d, {child})
+end function
+--------------------------------------------------------------------------------
+export function ProgressDlg() -- [dialog] handle to a pre-defined IUP structure
+    crid pd = Crid("+IupProgressDlg", IUP, {}, C_POINTER)
+    return c_func(pd, {})
 end function
 --------------------------------------------------------------------------------
 --/*
@@ -359,6 +361,17 @@ export enum CONTINUE = -4, CLOSE, DEFAULT, IGNORE
 --/*
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.1
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.11.01
+--Status: incomplete, but extensible; operational
+--Changes:]]]
+--* ##alarm## defined
+--* ##FileDlg## defined
+--* ##MessageDlg## defined
+--* ##FontDlg## defined
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.0
 --Euphoria Versions: 4.0.5 upwards
