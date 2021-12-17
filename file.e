@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- OE4OOP/file.e
+-- OE4OOP/MarkII/file.e
 --------------------------------------------------------------------------------
 -- Notes:
 --
@@ -9,134 +9,137 @@
 --= Library: file.e
 --Description: a simple file "class" using the OE4OOP approach
 ------
---[[[Version: 4.0.5.0
+--[[[Version: 4.0.5.1
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.27
+--Date: 2021.12.16
 --Status: complete, but extensible; operational
 --Changes:]]]
---* created
+--* edited out references to string as a class - now just a (standard) type
 --
 --==Open Euphoria for OOP (OE4OOP) library: file
 --
--- This library defines a //file// "class".
+-- This class has two properties:
 --
--- The library stores (locally) instances/entities and their current property values.
+-- * a **string** holding the name of the file
+-- * an **integer** holding the handle to the file
 --
--- The process issues a handle whenever the Constructor is called, which
--- links to specific instance to the local store.
+-- and fifteen methods:
 --
--- The stored instances/entities are at the level of abstraction determined in
--- the class definition.
---
--- Instance property values can only be accessed or changed if an 
--- appropriate //accessor// or //mutator// routine is defined and given appropriate
--- scope.
---
--- This file "class" has just two "properties":
---
---* name
---* handle
+-- * ##File##(string[, string]) - the Constructor
+-- * ##GetName##(file) - string: the stored filename
+-- * ##GetHandle##(file) - integer: the current value (-1|>2) 
+-- * ##Open##(file) - void
+-- * ##Close##(file) - void
+-- * ##IsOpen##(file) - boolean
+-- * ##IsClosed##(file) - boolean
+-- * ##Read##(file[,integer]) - string
+-- * ##ReadLine##(file[,integer]) - string
+-- * ##ReadLines##(file) - sequence
+-- * ##Write##(file,sequence) - integer
+-- * ##WriteLines##(file,sequence) - integer
+-- * ##Flush##(file) - void
+-- * ##Seek##(file[atom[,integer]]) - boolean
+-- * ##Tell##(file) - integer
 --
 -- To invoke this library add:
--- <eucode>include file.e</eucode>
--- to the calling module (library or application), possible in the form:
--- <eucode>public include file.e</eucode>
--- if using for purposes of inheritance.
+-- <eucode>[public ]include file.e</eucode>
+-- to the calling module.
+--
 ------
 --*/
 --------------------------------------------------------------------------------
 --/*
 --==Interface
+--=== Includes
 --*/
 --------------------------------------------------------------------------------
---/*
---=== Includes only standard OE libraries
---*/
---------------------------------------------------------------------------------
-include std/io.e -- for 'flush', 'seek', 'where'
+public include oe4oop.e -- for OE4OOP engine, 'inst', 'EMPTY', 'VOID' -- Version 4.0.5.1
+include std/io.e
 include std/math.e -- for 'abs'
-include std/types.e -- for 'boolean', 'string'
+include std/types.e -- for 'string' -- Version 4.0.5.1
 --------------------------------------------------------------------------------
 --/*
---=== "class" file
+--=== "Class" file
 --*/
 --------------------------------------------------------------------------------
 export type file(integer this) -- [pointer/index] positive integer
-    return this > 0
+    return inst(this) -- inheritance - from Base Class
     end type
-    sequence files = {} -- for storage of instance/entity sub-sequences
-    integer fl = 0 -- index to 'persons' storage and, when assigned, the
-                          -- ID pointer identifying the instance/entity
-    enum NAME, HANDLE -- pointers to properties
-    export function File(string name, string mode = "") --> [file]
+    enum NAME, HANDLE -- property pointers
+    export function File(string name, string mode = EMPTY) --> [file] -- Version 4.0.5.1
         integer fh
         if length(mode)
         then fh = open(name, mode)
         else fh = -1
         end if
-        files = append(files, {name, fh})
-        fl += 1
-        return fl
+        return New({name, fh}) -- Version 4.0.5.1
         end function
-    export function getName(file this) --> [string] file name
-        return files[this][NAME]
+    export function GetName(file this) -- [sequence]
+        sequence f = getD(this)
+        return f[NAME] -- Version 4.0.5.1
         end function
-    export function getHandle(file this) --> [integer] current file handle
-        return files[this][HANDLE]
+    export function GetHandle(file this) -- [integer]
+        sequence f = getD(this)
+        return f[HANDLE]
         end function
-    export function isOpen(file this) --> [boolean] open|closed
-        return files[this][HANDLE] > 2
+    export function IsOpen(file this) --> [boolean] open|closed
+        return GetHandle(this) > 2
         end function
-    export function closed(file this) --> [boolean] closed|open
-        return not isOpen(this)
+    export function IsClosed(file this) --> [boolean] closed|open
+        return not IsOpen(this)
         end function
-    export procedure Open(file this, string mode = "r")
-        files[this][HANDLE] = open(files[this][NAME], mode)
-        end procedure
-    export function read(file this, integer size = 0) --> [string] contents of file|size bytes
-        if closed(this) then Open(this) end if
-        integer fh = files[this][HANDLE]
-        string str = ""
-        if size
-        then
-            for i = 1 to size
-            do
+    export function Open(file this, string mode = "r") --> [void] -- Version 4.0.5.1
+        sequence f = getD(this)
+        f[HANDLE] = open(f[NAME], mode) -- Version 4.0.5.1
+        setD(this, f)
+        return VOID
+        end function
+    export function Read(file this, integer size = 0) --> [string] containing contents of file|size bytes
+        if IsClosed(this) then Open(this) end if
+        integer fh = GetHandle(this)
+        string str = "" -- Version 4.0.5.1
+        if size then
+            for i = 1 to size do
                 str &= getc(fh)
-            end for
+                end for
         else
             integer c = getc(fh)
-            while c != EOF
-            do
+            while c != EOF do
                 str &= c
                 c = getc(fh)
             end while
         end if
-        return str
+        return str -- Version 4.0.5.1
         end function
-    export function readline(file this, integer size = 0) --> [string] next line (size bytes
-        string line = gets(files[this][HANDLE])
+    export function ReadLine(file this, integer size = 0) --> [string] containing next line (size all|bytes)
+        string line = gets(GetHandle(this)) -- Version 4.0.5.1
         if size = 0
-        then return line
-        else return line[1..size]
+        then return line -- Version 4.0.5.1
+        else return line[1..size] -- Version 4.0.5.1
         end if
         end function
-    export function readlines(file this) --> [sequence] set of lines
-        return read_lines(files[this][HANDLE])
+    export function ReadLines(file this) --> [sequence] set of lines
+        return read_lines(GetHandle(this))
         end function
-    export procedure Close(file this)
-        if files[this][HANDLE] > 2
-        then close(files[this][HANDLE])
+    export function Close(file this) --> [void]
+        sequence f = getD(this)
+        integer fh = f[HANDLE]
+        if fh > 2 then
+            close(fh)
+            f[HANDLE] = -1
+            setD(this, f)
         else -- OK
         end if
-        files[this][HANDLE] = -1
-        end procedure
-    export procedure Flush(file this)
-        flush(files[this][HANDLE])
-        end procedure
+        return VOID
+        end function    
+    export function Flush(file this) --> [void]
+        flush(GetHandle(this))
+        return VOID
+        end function    
     export enum START, CURRENT, EOS
     export function Seek(file this, atom offset = 0, integer whence = START) --> [boolean] success?
-        integer fh = files[this][HANDLE]
+        integer fh = GetHandle(this)
         integer here = where(fh)
         switch whence do
         case START then offset = abs(offset)
@@ -146,27 +149,22 @@ export type file(integer this) -- [pointer/index] positive integer
         return seek(fh, offset)
         end function
     export function Tell(file this) --> [integer] current position in filestream
-        return where(files[this][HANDLE])
+        return where(GetHandle(this))
         end function
-    export function write(file this, string data) --> [integer] 1 (success)|-1
-        return write_file(files[this][HANDLE], data)
+    export function Write(file this, string data) --> [integer] 1 (success)|-1
+        return write_file(GetHandle(this), data)
         end function
-    export function writelines(file this, sequence lines) --> [integer] 1 (success)|-1
-        return write_lines(files[this][HANDLE], lines)
+    export function WriteLines(file this, sequence lines) --> [integer] 1 (success)|-1
+        return write_lines(GetHandle(this), lines)
         end function
 --------------------------------------------------------------------------------
--- Previous versions
+-- Previous Versions
 --------------------------------------------------------------------------------
---------------------------------------------------------------------------------
--- test
-file f = File("file.e")
-Open(f)
-if isOpen(f) then printf(1, "%s is now open, with handle = %d\n", {getName(f), getHandle(f)}) end if
-printf(1, "The first 20 characters of the file: %s\n", {read(f, 20)})
-Seek(f) -- start
-Seek(f,, EOS) -- eof
-printf(1, "%s is %d characters long\n", {getName(f), Tell(f)})
-Seek(f,-100, CURRENT)
-printf(1, "Pointer now at %d\n", {Tell(f)})
-Close(f)
-if isOpen(f) then puts(1, "File still open!\n") else puts(1, "File now closed!\n") end if
+--[[[Version: 4.0.5.0
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2021.12.15
+--Status: complete, but extensible; operational
+--Changes:]]]
+--* created with 'string' as a class type
+--------------------------------------------------------------------------------    

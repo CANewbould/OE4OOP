@@ -1,118 +1,80 @@
--- OE4OOP/triangle.e
+--------------------------------------------------------------------------------
+-- OE4OOP/MarkII/triangle.e
 --------------------------------------------------------------------------------
 -- Notes:
 --
---* This module incorporates a system of embedded documentation.
---* Each code block has its own supporting explanation.
---* For convenience all routines are defined as functions.
+--
 --------------------------------------------------------------------------------
 --/*
 --= Library: triangle
---Description: a triangle "class" library using the OE4OOP approach
+--Description: an example of a class using the OE4OOP approach
 ------
 --[[[Version: 4.0.5.1
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.22
---Status: incomplete, but extensible; operational
+--Date: 2021.12.16
+--Status: complete; operational
 --Changes:]]]
---* modified to allow for changes in //shape2.e//
+--* copied from 'Base1'
 --
 --==Open Euphoria for OOP (OE4OOP) library: triangle
 --
--- The **triangle** class has three properties:
+-- A basic triangle class library. This class has three properties:
 --
---* a
---* b
---* c
+-- * a **sequence** holding the dimensions of the triangle
+-- * a //routine-id// for the triangle's ##Area## method
+-- * a //routine-id// for the triangle's ##Perimeter## method
 --
--- to denote the three sides, and two methods:
+-- and two methods:
 --
---* ##area##, calculated using Heron's formula
---* ##perimeter##
+--* ##Area## - the area
+--* ##Perimeter## - the perimeter
 --
 -- To invoke this library add:
--- <eucode>include triangle.e</eucode>
--- to the calling module (library or application), possible in the form:
--- <eucode>public include triangle.e</eucode>
--- if using for purposes of inheritance.
+-- <eucode>[public ]include triangle.e</eucode>
+-- to the calling module.
 --
 ------
 --*/
 --------------------------------------------------------------------------------
 --/*
 --==Interface
---*/
---------------------------------------------------------------------------------
---/*
 --=== Includes
 --*/
 --------------------------------------------------------------------------------
-include shape2.e -- parent
+public include shape.e -- parent
 --------------------------------------------------------------------------------
---/*
---=== "Class" triangle
---*/
---------------------------------------------------------------------------------
--- Pointers to  Dimension Elements
---------------------------------------------------------------------------------
-enum A, B, C
---------------------------------------------------------------------------------
---/*
---=== "class" type
---
---*/
---------------------------------------------------------------------------------
-export type triangle(integer this) -- [pointer/index] positive integer
-    return shape(this) -- inheritance
-end type
---------------------------------------------------------------------------------
---/*
---=== "Methods"
---
--- The function names are self-explanatory.
--- A simple code is used to indicate the return value and its type
---*/
---------------------------------------------------------------------------------
---/*
---==== Constructor
---
--- Constructors in OE4OOP are necessary to ensure that the instance/entity
--- is suitably populated and abstracted.
---*/
---------------------------------------------------------------------------------
--- Area calculation
---------------------------------------------------------------------------------
-function t_area(triangle this) --> [atom] area of triangle of given dimensions
-    sequence t = getDims(this)
+function Tarea(sequence dims) --> [atom]
     -- Heron's formula
-    atom a = t[A]
-    atom b = t[B]
-    atom c = t[C]
-    atom s = (a+b+c)/2
+    atom a = dims[A], b = dims[B], c = dims[C], s = (a+b+c)/2
     return sqrt(s*(s-a)*(s-b)*(s-c))
-end function
-constant T_area = routine_id("t_area")
+    end function
+constant _Tarea = routine_id("Tarea")
 --------------------------------------------------------------------------------
-function t_perimeter(triangle this) --> [atom] perimeter of triangle of given dimensions
-    sequence t = getDims(this)
-    return t[A] + t[B] + t[C]
-end function
-constant T_perimeter = routine_id("t_perimeter")
+function Tperimeter(sequence dims) --> [atom]
+    return dims[A] + dims[B] + dims[C]
+    end function
+constant _Tperimeter = routine_id("Tperimeter")
 --------------------------------------------------------------------------------
-export function Triangle(atom a, atom b, atom c) --> [triangle] unique id
-    return Shape({a, b, c}, {T_area, T_perimeter})
-end function
+--/*
+--=== "Class" rectangle
+--*/
 --------------------------------------------------------------------------------
--- Previous versions
+export type triangle(integer this) -- [integer] key to instance store
+    return shape(this) -- inheritance
+    end type
+    enum A, B, C
+    export function Triangle(sequence sides) --> [rectange] unique id
+        return Shape(sides, {_Tarea, _Tperimeter}) -- uses parent 'constructor'
+        end function
+--------------------------------------------------------------------------------
+-- Previous Versions
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.0
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.17
---Status: incomplete, but extensible; operational
+--Date: 2021.12.15
+--Status: complete; operational
 --Changes:]]]
 --* created
---* mainly copied from shapes1.e
---* modified to allow overriding
---------------------------------------------------------------------------------
+--------------------------------------------------------------------------------    

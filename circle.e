@@ -1,115 +1,78 @@
--- OE4OOP/circle.e
+--------------------------------------------------------------------------------
+-- OE4OOP/MarkII/circle.e
 --------------------------------------------------------------------------------
 -- Notes:
 --
---* This module incorporates a system of embedded documentation.
---* Each code block has its own supporting explanation.
---* For convenience all routines are defined as functions.
+--
 --------------------------------------------------------------------------------
 --/*
 --= Library: circle
---Description: a circle "class" library using the OE4OOP approach
+--Description: an example of a class using the OE4OOP approach
 ------
---[[[Version: 4.0.5.2
+--[[[Version: 4.0.5.1
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.17
---Status: incomplete, but extensible; operational
+--Date: 2021.12.16
+--Status: complete; operational
 --Changes:]]]
---* modified to allow for changes in //shape2.e//
+--* copied from 'Base1'
 --
 --==Open Euphoria for OOP (OE4OOP) library: circle
 --
--- The **circle** class has one property:
+-- A basic circle class library. This class has three properties:
 --
---* radius
+-- * an **atom** holding the radius of the circle.
+-- * a //routine-id// for the circle's ##Area## method
+-- * a //routine-id// for the circle's ##Perimeter## method
 --
 -- and two methods:
 --
---* ##area##
---* ##perimeter##
+--* ##Area## - the area
+--* ##Perimeter## - the perimeter
 --
 -- To invoke this library add:
--- <eucode>include circle.e</eucode>
--- to the calling module (library or application), possible in the form:
--- <eucode>public include circle.e</eucode>
--- if using for purposes of inheritance.
+-- <eucode>[public ]include circle.e</eucode>
+-- to the calling module.
 --
 ------
 --*/
 --------------------------------------------------------------------------------
 --/*
 --==Interface
---*/
---------------------------------------------------------------------------------
---/*
 --=== Includes
 --*/
 --------------------------------------------------------------------------------
-public include shape2.e -- parent
+public include shape.e -- parent
 include std/mathcons.e -- for 'PI'
+--------------------------------------------------------------------------------
+function Carea(atom radius) --> [atom]
+    return PI * radius * radius
+    end function
+constant _Carea = routine_id("Carea")
+--------------------------------------------------------------------------------
+function Cperimeter(atom radius) --> [atom]
+    return 2 * PI * radius
+    end function
+constant _Cperimeter = routine_id("Cperimeter")
 --------------------------------------------------------------------------------
 --/*
 --=== "Class" circle
 --*/
 --------------------------------------------------------------------------------
---/*
---=== "class" type
---
---*/
---------------------------------------------------------------------------------
-export type circle(integer this) -- [pointer/index] positive integer
+export type circle(integer this) -- [integer] key to instance store
     return shape(this) -- inheritance
-end type
+    end type
+    export function Circle(atom radius) --> [circle] unique id
+        return Shape(radius, {_Carea, _Cperimeter}) -- uses parent 'constructor'
+        end function
 --------------------------------------------------------------------------------
---/*
---=== "Methods"
---
--- The function names are self-explanatory.
--- A simple code is used to indicate the return value and its type
---*/
---------------------------------------------------------------------------------
---/*
---==== Constructor
---
--- Constructors in OE4OOP are necessary to ensure that the instance/entity
--- is suitably populated and abstracted.
---*/
---------------------------------------------------------------------------------
--- Area calculation
---------------------------------------------------------------------------------
-function c_area(circle this) --> [atom] area of circle with given radius
-    atom radius = getDims(this)
-    return PI * radius * radius
-end function
-constant C_area = routine_id("c_area")
---------------------------------------------------------------------------------
-function c_perimeter(circle this) --> [atom] circumference of circle with given radius
-    atom radius = getDims(this)
-    return 2 * PI * radius
-end function
-constant C_perimeter = routine_id("c_perimeter")
---------------------------------------------------------------------------------
-export function Circle(atom radius) --> [circle] unique id
-    return Shape(radius, {C_area, C_perimeter}) -- a serial number; index to storage
-end function
---------------------------------------------------------------------------------
--- Previous versions
---------------------------------------------------------------------------------
---[[[Version: 4.0.5.1
---Euphoria Versions: 4.0.5 upwards
---Author: C A Newbould
---Date: 2021.11.17
---Status: incomplete, but extensible; operational
---Changes:]]]
---* modified to allow overriding
+-- Previous Versions
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.0
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.16
---Status: incomplete, but extensible; operational
+--Date: 2021.12.15
+--Status: complete; operational
 --Changes:]]]
 --* created
---* mainly copied from shapes1.e
---------------------------------------------------------------------------------
+--------------------------------------------------------------------------------    

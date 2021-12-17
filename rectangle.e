@@ -1,119 +1,78 @@
--- OE4OOP/rectangle.e
+--------------------------------------------------------------------------------
+-- OE4OOP/MarkII/rectangle.e
 --------------------------------------------------------------------------------
 -- Notes:
 --
---* This module incorporates a system of embedded documentation.
---* Each code block has its own supporting explanation.
---* For convenience all routines are defined as functions.
+--
 --------------------------------------------------------------------------------
 --/*
 --= Library: rectangle
---Description: a rectangle "class" library using the OE4OOP approach
+--Description: an example of a class using the OE4OOP approach
 ------
---[[[Version: 4.0.5.2
+--[[[Version: 4.0.5.1
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.22
---Status: incomplete, but extensible; operational
+--Date: 2021.12.16
+--Status: complete; operational
 --Changes:]]]
---* modified to allow for changes in //shape2.e//
+--* copied from 'Base1'
 --
 --==Open Euphoria for OOP (OE4OOP) library: rectangle
 --
--- The **rectangle** class has two properties:
+-- A basic rectangle class library. This class has has three properties:
 --
---* length
---* breadth
+-- * a **sequence** holding the dimensions of the rectangle
+-- * a //routine-id// for the rectangle's ##Area## method
+-- * a //routine-id// for the rectangle's ##Perimeter## method
 --
--- to denote the two sides, and two methods:
+-- and two methods:
 --
---* ##area##
---* ##perimeter##
+--* ##Area## - the area
+--* ##Perimeter## - the perimeter
 --
 -- To invoke this library add:
--- <eucode>include rectangle.e</eucode>
--- to the calling module (library or application), possible in the form:
--- <eucode>public include rectangle.e</eucode>
--- if using for purposes of inheritance.
+-- <eucode>[public ]include rectangle.e</eucode>
+-- to the calling module.
 --
 ------
 --*/
 --------------------------------------------------------------------------------
 --/*
 --==Interface
---*/
---------------------------------------------------------------------------------
---/*
 --=== Includes
 --*/
 --------------------------------------------------------------------------------
-include shape2.e -- parent
+public include shape.e -- parent
+--------------------------------------------------------------------------------
+function Rarea(sequence dims) --> [atom]
+    return dims[HEIGHT] * dims[WIDTH]
+    end function
+constant _Rarea = routine_id("Rarea")
+--------------------------------------------------------------------------------
+function Rperimeter(sequence dims) --> [atom]
+    return 2 * (dims[HEIGHT] + dims[WIDTH])
+    end function
+constant _Rperimeter = routine_id("Rperimeter")
 --------------------------------------------------------------------------------
 --/*
 --=== "Class" rectangle
 --*/
 --------------------------------------------------------------------------------
--- Pointers to Dimension Elements
---------------------------------------------------------------------------------
-enum LENGTH, BREADTH
---------------------------------------------------------------------------------
---/*
---=== "class" type
---
---*/
---------------------------------------------------------------------------------
-export type rectangle(integer this) -- [pointer/index] positive integer
+export type rectangle(integer this) -- [integer] key to instance store
     return shape(this) -- inheritance
-end type
+    end type
+    enum HEIGHT, WIDTH -- pointers to properties
+    export function Rectangle(sequence sides) --> [rectangle] unique id
+        return Shape(sides, {_Rarea, _Rperimeter}) -- uses parent 'constructor'
+        end function
 --------------------------------------------------------------------------------
---/*
---=== "Methods"
---
--- The function names are self-explanatory.
--- A simple code is used to indicate the return value and its type
---*/
---------------------------------------------------------------------------------
---/*
---==== Constructor
---
--- Constructors in OE4OOP are necessary to ensure that the instance/entity
--- is suitably populated and abstracted.
---*/
---------------------------------------------------------------------------------
--- Area calculation
---------------------------------------------------------------------------------
-function r_area(rectangle this) --> [atom] area of rectangle of given dimensions
-    sequence r = getDims(this)
-    return r[LENGTH] * r[BREADTH]
-end function
-constant R_area = routine_id("r_area")
---------------------------------------------------------------------------------
-function r_perimeter(rectangle this) --> [atom] perimeter of rectangle of given dimensions
-    sequence r = getDims(this)
-    return (r[LENGTH] + r[BREADTH]) * 2
-end function
-constant R_perimeter = routine_id("r_perimeter")
---------------------------------------------------------------------------------
-export function Rectangle(atom len, atom breadth) --> [rectangle] unique id
-    return Shape({len, breadth}, {R_area, R_perimeter}) -- a serial number; index to storage
-end function
---------------------------------------------------------------------------------
--- Previous versions
---------------------------------------------------------------------------------
---[[[Version: 4.0.5.1
---Euphoria Versions: 4.0.5 upwards
---Author: C A Newbould
---Date: 2021.11.17
---Status: incomplete, but extensible; operational
---Changes:]]]
---* modified to allow overriding
+-- Previous Versions
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.0
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2021.11.16
---Status: incomplete, but extensible; operational
+--Date: 2021.12.15
+--Status: complete; operational
 --Changes:]]]
 --* created
---* mainly copied from shapes1.e
---------------------------------------------------------------------------------
+--------------------------------------------------------------------------------    
