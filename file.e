@@ -91,7 +91,7 @@ export type file(integer this) -- [pointer/index] positive integer
     export function closed(file this) --> [boolean] closed|open
         return not isOpen(this)
         end function
-        export procedure Open(file this, string mode = "r")
+    export procedure Open(file this, string mode = "r")
         files[this][HANDLE] = open(files[this][NAME], mode)
         end procedure
     export function read(file this, integer size = 0) --> [string] contents of file|size bytes
@@ -154,7 +154,7 @@ export type file(integer this) -- [pointer/index] positive integer
     export function writelines(file this, sequence lines) --> [integer] 1 (success)|-1
         return write_lines(files[this][HANDLE], lines)
         end function
-    --------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
