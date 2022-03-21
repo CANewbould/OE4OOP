@@ -30,7 +30,7 @@ To make OE4OOP independent of all but *map* in OE's standard libraries, there is
 
 There is a real sense in which OE4OOP and CANOE are one concept: CANOE focusses on object types and  **list**s of well-regulated **sequence**s, like all-integers, all-atoms, all-characters, all-boolean. OE4OOP deals with more "unregulated" **sequence**s, where a system for handling structures is desirable. (As such, there is not only no need for overlap between the two but also the same layout system has been adopted, in may ways to emphasise this congruence.)
 
-##Dot notation
+## Dot notation
 
 Many implementations of OOP include dot-notation syntax. Although not fundamental to the concept it is a very useful way to emphasise the centrality of the **object** notion.
 
