@@ -1,14 +1,14 @@
 --------------------------------------------------------------------------------
--- circle.e
+-- shape.e
 --------------------------------------------------------------------------------
 -- Notes:
 --
 --
 --------------------------------------------------------------------------------
 --/*
---= Module: circle
--- Description: Open Euphoria library for a circle class
---[[[Version: 4.1.0.2
+--= Module: shape
+-- Description: Open Euphoria library for a shape class
+--[[[Version: 4.1.0.1
 -- Date: 2022.03.17
 -- Author: C A Newbould
 -- Status: operational; complete
@@ -16,12 +16,12 @@
 --  * modified layout
 --
 ------
---== A simple approach to OOP using Open Euphoria: circle
+--== A simple approach to OOP using Open Euphoria: shape
 --
--- This library module provides the necessary definitions for a **circle** object.
+-- This library module provides the necessary definitions for a **shape** object.
 --
--- A **circle** is a specific entity, intended for direct use. It inherits from
--- the **shape** class.
+-- A **shape** is a general entity, not intended for direct use, but the
+-- shape class acts like an abstract class in other languages.
 --
 --*/
 --------------------------------------------------------------------------------
@@ -33,51 +33,42 @@
 --=== Includes
 --*/
 --------------------------------------------------------------------------------
-public include shape.e -- parent - public for inheritance use
+-- include the OE4OOP engine - made public for inheritance
+public include std/map.e -- for 'get', 'map', 'new', 'put'
 --------------------------------------------------------------------------------
 --/*
---=== The circle class
+--=== The shape class
 --*/
 --------------------------------------------------------------------------------
-export type circle(object o) -- t(o -> (t(sh) -> t(m))) -> ci
-    return shape(o) -- the 'parent'
+export type shape(object o) -- t(o -> t(m)) -> sh
+    return map(o) -- the 'parent'
     end type
     --/*
     --==== Properties
-    --* atom radius - the dimension(s) of the shape
+    --* object dims - the dimension(s) of the shape
     --===== Quasi-properties (here because we need overriding capability)
     --* atom area
     --* atom perimeter
     --==== Methods
-    --*/
-    export function Circle(atom radius) -- f(a) -> ci
-        shape sh = Shape(radius)
-        put(sh, "area", c_area)
-        put(sh, "perim", c_perim)
+    export function Shape(object dims) -- f(o) -> sh
+        map sh = new() -- empty object
+        put(sh, "dims", dims)
+        put(sh, "area", -1) -- default rid
+        put(sh, "perim", -1) -- default rid
         return sh
     end function
-    constant PI = 3.14159_26535_89793_23846
-    function _carea(atom r) -- f(a) -> a
-        return PI * r * r
+    public function Area(shape sh) -- f(sh) -> a - public for inheritance
+        return call_func(get(sh, "area"), {get(sh, "dims")})
     end function
-    constant c_area = routine_id("_carea")
-    function _cperim(atom r) -- f(a) -> a
-        return 2 * PI * r
+    public function Perimeter(shape sh) -- f(sh) -> a - public for inheritance
+        return call_func(get(sh, "perim"), {get(sh, "dims")})
     end function
-    constant c_perim = routine_id("_cperim")
 --------------------------------------------------------------------------------
 --/*
 ------
 --*/
 --------------------------------------------------------------------------------
 -- Previous versions
---------------------------------------------------------------------------------
---[[[Version: 4.1.0.1
--- Date: 2022.01.09
--- Author: C A Newbould
--- Status: operational; complete
--- Changes:]]]
---  * defined 'PI' intenally
 --------------------------------------------------------------------------------
 --[[[Version: 4.1.0.0
 -- Date: 2022.01.08

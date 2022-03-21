@@ -1,60 +1,60 @@
 --------------------------------------------------------------------------------
--- OE4OOP/shapes.ex
+-- shapes.ex
 --------------------------------------------------------------------------------
 -- Notes:
 --
--- Test application cast in the form of running a Main procedure
+--
 --------------------------------------------------------------------------------
 --/*
---= Application: shapes.ex
---Description: a testbed for the "OOP" implementation of OE (OE4OOP), based on
--- the 'shape' "class" and its children, as defined in 'shape.e'
-------
---[[[Version: 4.0.5.0
---Euphoria Versions: 4.0.5 upwards
---Author: C A Newbould
---Date: 2021.10.28
---Status: incomplete, but extensible; operational
---Changes:]]]
---* created
---* test of //circle// added
---* test of //rectangle// added
---* test of //triangle// added
---
---==Open Euphoria for OOP (OE4OOP) application: shapes
---
--- This simple application illustrates how to create instances/entities and
--- use defined routines ("methods") to operate upon them. It specifically
--- illustrates an approach to overriding of routines.
---
--- To run this (test) example simply enter, into a terminal/command-prompt
--- window, focussed in the OE4OOP project folder, the following:
---<eucode>eui shapes</eucode>
+--= Module: shapes
+-- Description: Open Euphoria application applied to various shape classes
+--[[[Version: 4.1.0.1
+-- Date: 2022.01.09
+-- Author: C A Newbould
+-- Status: operational; complete
+-- Changes:]]]
+--  * switched to CANOE io routines
 --
 ------
+--== A simple approach to OOP using Open Euphoria: shapes
+--
+-- This test application demonstrates how to create OE4OOP objects and apply
+-- methods to those objects.
+--
+-- This particular example shows overriding in action.
+--
 --*/
 --------------------------------------------------------------------------------
--- Interface
+--
+-- Start the processes
+--
 --------------------------------------------------------------------------------
--- Includes
+include circle.e -- for 'Area', 'circle', 'Circle', 'Perimeter'
+circle c = Circle(20)
+include io.e -- for 'writef','writefln'
+writef(Area(c),"A circle of radius 20 has an area of %.2f ")
+writefln(Perimeter(c), "and a perimeter of %.2f.")
+include rectangle.e -- for 'Area', 'Perimeter', 'rectangle', 'Rectangle'
+rectangle r = Rectangle({10,20})
+writef(Area(r), "A rectangle 10x20 has an area of %d ")
+writefln(Perimeter(r), "and a perimeter of %d.")
+include triangle.e -- for 'Area', 'Perimeter', 'triangle', 'Triangle'
+triangle t = Triangle({5,12,13})
+writef(Area(t), "A triangle 5x12x13 has an area of %d ")
+writefln(Perimeter(t), "and a perimeter of %d.")
 --------------------------------------------------------------------------------
-include shapes.e -- for 'area', 'circle', 'Circle, 'rectangle', 'Rectangle', 'triangle', 'Triangle'
+--
+-- Set heading & output
+--*/
 --------------------------------------------------------------------------------
--- Main
---------------------------------------------------------------------------------
-procedure main()
-    circle circ = Circle(20)
-    printf(1, "The area of the circle is %.2f\n", area(circ))
-    rectangle rect = Rectangle(20, 15)
-    printf(1, "The area of the rectangle is %.2f\n", area(rect))
-    triangle tri = Triangle(3, 6, 7)
-    printf(1, "The area of the triangle is %.2f\n", area(tri))
-end procedure
---------------------------------------------------------------------------------
--- Execution
---------------------------------------------------------------------------------
-main()
+display("This application calls the same two functions from three different objects")
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+--[[[Version: 4.1.0.0
+-- Date: 2022.01.08
+-- Author: C A Newbould
+-- Status: operational; complete
+-- Changes:]]]
+--  * created
 --------------------------------------------------------------------------------
