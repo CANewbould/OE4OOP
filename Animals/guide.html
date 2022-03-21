@@ -1,0 +1,370 @@
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+ <title></title>
+ <link rel="stylesheet" media="screen, projection, print" type="text/css" href="style.css"/>
+<!-- source="guide.cr" -->
+</head>
+<body>
+
+<a name="_0_aguidetousingoe4oop"></a><a name="aguidetousingoe4oop"></a><h1>A guide to using OE4OOP</h1>
+<p> by Charles A Newbould </p>
+
+<p> (with special thanks to Alex(ander) Caracatsanis, whose splendid introduction to programming with Diamond Lite is the inspiration for this guide) </p>
+
+<p> This is a (gentle - I hope) introduction to using Object-Oriented Programming (OOP) built upon Open Euphoria. All the examples and illustrations should work with any version, but have been developed and tested using  Version 4.1.0b2 (the latest one available for download). </p>
+
+<p> I will assume that you the reader are already familiar with the Euphoria language, but will begin with some basic OOP concepts, which I shall not assume. </p>
+
+<a name="_1_oop"></a><a name="oop"></a><h2>OOP</h2>
+<p> OOP is essentially a "black box" view of programming. </p>
+
+<p> All programming languages deal with <em>data</em> and <em>routines</em> (the things that allow data to be transformed and manipulated). In conventional approaches these notions are essentially kept separate, with routines being constructed in much the same way as algebraic formulae, and data being defined and classified into a range of types (hierarchical or otherwise). The interaction comes when a routine's definition requires the writer to specify any restrictions on the data used in that definition or accepted as "input" (<em>arguments</em>) to it. </p>
+
+<p> Where OOP stands out is that the two concepts are essentially merged, but with <em>data</em> assuming  dominance. Instead of data being fed into routines and other data (possibly) resulting, in OOP all data are manipulated from within an <em>Object</em>, this being a receptacle both for (sub) items of data <tt>and</tt> all the routines which can be used to modify the contents of the Object. No processing outside the Object can take place, nor can an "outsider" access the inner contents of that Object, except using the tools provided by the coder of that Object. </p>
+
+<p> Objects, often referred to as <em>Instance</em>s or <em>Entities</em>, are defined using a general typography, known as <em>Class</em> definition. Every Instance is a living example of the Object defined in the class statement, but unique insofar as it has been the subject of initialisation and subsequent manipulation by a user. </p>
+
+<p> To aid generalisation, a class which is a refinement of a pre-existing class can <em>inherit</em> all the <em>properties</em> (internal data items) and <em>method</em>s (routines) resident in the parent class definition. So code written once can be used (potentially) over and over again; or, more particularly, you don't (necessarily) have to start creating new classes from scratch. </p>
+
+<p> Although arguably not an essential part of the OOP concept, it is thought desirable to have maximum flexibility by having methods which have multiplicity of purpose and/or form, so that they can handle a wider range of circumstances and/or can be easily extended to cover new developments. This applies particularly when instances are created. A new instances is created using a <em>Constructor</em> routine (a <strong>function</strong> returning a value - here a pointer to the specific object/instance). Having the capacity to accept a range of different input values obviously generalises and thus greatly enhances the utility of the Constructor. For example, using a Euphorian concept, we might want to create a <strong>sequence</strong> directly from a specific value, or using the <tt>repeat</tt> function, creating a <tt>series</tt>, etc. </p>
+
+<p> Another issue which enhances the principle of code re-use is the ability of a "child" class to overwrite the definition of one particular method without disturbing the rest of the inherited set of methods - a process known as <em>overriding</em>. </p>
+
+<a name="_2_euphoriasapproachtotheseconcepts"></a><a name="euphoriasapproachtotheseconcepts"></a><h2>Euphoria's approach to these concepts</h2>
+<p> Euphoria has always made claims to possessing many of the ideas of OOP without offering, within the language, any set system or obvious syntax to implement them. </p>
+
+<p> The original (RDS) Euphoria always had some OOP-friendly notions and Open Euphoria's development has added quite a few others. Current discussion on the Forum with regard to "Structs" suggests that more might follow. Let's take a quick look at these. </p>
+
+<p> Euphoria (remember the "ho" stands for "hierarchy" and "objects", respectively) offers a <strong>type</strong> concept, whereby a data "structure" can be precisely defined/restricted. Using a <strong>sequence</strong> as a "shell" enables a user to build any kind of type that one could possibly imagine. </p>
+
+<p> Within a sequence it is possible to store individual items of data, each having its own type definition. The concept of <strong>routine_id</strong> (whereby any function or procedure can be represented by an integral value) allows a sequence also to hold - via this pointer - (indirectly to) routines. </p>
+
+<p> Equally a data-structure, like a <strong>sequence</strong> or a <strong>map</strong> (a <strong>dictionary</strong> in other languages) can be stored away from a user's access but pointed to using a <strong>handle</strong>; this is the approach used by OE4OOP which will be exemplified below. </p>
+
+<p> Thus Euphoria has always enabled OOP's concept of <em>encapsulation</em>. </p>
+
+<p> Likewise Euphoria has always offered tools for managing <em>scope</em>: the ability to determine what data/routines are accessible in different programming environments. Open Euphoria has refined these, to allow more sophisticated scope management, both between modules of code and within the structures inside blocks of code. So Euphoria has always been capable of showing and hiding what is available for users to access. </p>
+
+<p> Open Euphoria also introduced the formal process of <strong>override</strong> (but it was always - warning aside - there before). The concept of <strong>namespace</strong> (explicit in Open Euphoria, but available before) offers the ability to re-use the same routine names in different modules. The big OOP-related advance, however, was the ability to set default values to a routine's arguments, thus allowing different numbers and/or types of arguments to be offered. (Incidentally, the option was always there before - by using sequence(s) as arguments - see, for example, Matt Lewis's approach to argument-setting in his wxEuphoria library.) </p>
+
+<p> Although less well exemplified in the Euphoria literature, overriding has always been possible using <tt>routine_id</tt>s. The <em>shapes</em> example in the repository shows precisely how this can be done. In fact, all-in-all, I believe it to be better than the formal <em>override</em> or the namespace approach. </p>
+
+<p> So, for reasons like these, I believe the claims have always been justified. </p>
+
+<a name="_3_oe4oopexplained"></a><a name="oe4oopexplained"></a><h2>OE4OOP explained</h2>
+<p> Let's make a visit to Chestnut Farm, where Farmer Giles lives with his wife. The farm is small and mixed: there are milking cows in the fields, sheep on the moor and pigs behind the farm. Mrs Giles has a hen run, for the eggs produced. Farmer Giles has two dogs - one a worker, the other its predecessor, now an elderly pet. Two cats keep the mice down in the barn and keep the house vermin-free. Sadly one now isn't really a rat-catcher any more because it lost a leg in a road accident. How do we turn this nice pastoral scene into a set of objects? </p>
+
+<p> Start with the class hierarchy: here everything is animal. So we start with a class, with name <strong>animal</strong>, which has no parents. We call this a Base Class. We (using comment where needed) list the property types and values, which enter the constructor (the naming convention is the title-case of the class name) to initialise it with defaults. (Note, too, that type-checking takes place at this point.) Further comment-based annotation aids the description of the OE4OOP system. </p>
+
+<pre class="examplecode"><font color="#FF0055">--class animal() - no formal syntax, so use comment for layout</font>
+<font color="#0000FF">    public include </font><font color="#330033">map.e </font><font color="#FF0055">-- for the 'engine': 'new', 'put', 'get' </font>
+<font color="#0000FF">    export type </font><font color="#330033">animal</font><font color="#880033">(</font><font color="#0000FF">object </font><font color="#330033">o</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">map</font><font color="#880033">(</font><font color="#330033">o</font><font color="#880033">) </font><font color="#FF0055">-- base class so 'map' is the parent </font>
+<font color="#0000FF">        end type </font>
+<font color="#FF0055">    --  property integer legs - the number of legs an animal has </font>
+<font color="#FF0055">    --  property string sound - the sound an animal makes </font>
+<font color="#FF0055">    --  property integer times - the number of repeated sounds </font>
+<font color="#0000FF">    include </font><font color="#330033">string.e </font><font color="#FF0055">-- for 'string' </font>
+<font color="#FF0055">    -- The Base Class Constructor - Title-case usage </font>
+<font color="#0000FF">    public function </font><font color="#330033">Animal</font><font color="#880033">(</font><font color="#0000FF">integer </font><font color="#330033">legs=0,string sound=</font><font color="#330033">""</font><font color="#330033">,</font><font color="#0000FF">integer </font><font color="#330033">times=1</font><font color="#880033">) </font><font color="#FF0055">-- returns an 'animal' instance </font>
+<font color="#330033">        animal a = map:new</font><font color="#880033">() </font><font color="#FF0055">-- an empty store </font>
+<font color="#FF0055">        -- add the property name as 'key'; value as 'data' </font>
+<font color="#330033">        map:put</font><font color="#880033">(</font><font color="#330033">a,</font><font color="#330033">"legs"</font><font color="#330033">,legs</font><font color="#880033">) </font>
+<font color="#330033">        map:put</font><font color="#880033">(</font><font color="#330033">a,</font><font color="#330033">"sound"</font><font color="#330033">,sound</font><font color="#880033">) </font>
+<font color="#330033">        map:put</font><font color="#880033">(</font><font color="#330033">a,</font><font color="#330033">"times"</font><font color="#330033">,times</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">a </font><font color="#FF0055">-- the handle to the map structure </font>
+<font color="#0000FF">        end function </font>
+<font color="#FF0055">    --  'says' method: returns the sound (string) of an 'animal' object </font>
+<font color="#0000FF">    public function </font><font color="#330033">says</font><font color="#880033">(</font><font color="#330033">animal a,</font><font color="#0000FF">integer </font><font color="#330033">i=map:get</font><font color="#993333">(</font><font color="#330033">a,</font><font color="#330033">"times"</font><font color="#993333">)</font><font color="#880033">) </font><font color="#FF0055">-- returns the [repeated] sound </font>
+<font color="#330033">        string s = get</font><font color="#880033">(</font><font color="#330033">a,</font><font color="#330033">"sound"</font><font color="#880033">) </font>
+<font color="#0000FF">        switch </font><font color="#330033">i </font><font color="#0000FF">do </font>
+<font color="#0000FF">        case </font><font color="#330033">0 </font><font color="#0000FF">then return </font><font color="#330033">"" </font>
+<font color="#0000FF">        case </font><font color="#330033">1 </font><font color="#0000FF">then return </font><font color="#330033">s </font>
+<font color="#0000FF">        case else return </font><font color="#330033">says</font><font color="#880033">(</font><font color="#330033">a,i-1</font><font color="#880033">) </font><font color="#330033">&amp; </font><font color="#330033">',' </font><font color="#330033">&amp; s </font>
+<font color="#0000FF">        end switch </font>
+<font color="#0000FF">        end function </font>
+<font color="#FF0055">--end class - no formal syntax, so use comment for layout</font>
+</pre>
+
+<p> We need to think about the nature of the farm animals and what each is there for. Hens and Cows are productive - eggs and milk, respectively - whereas the others are either workers, pets or only produce a "product" when taken to the market or to the abattoir. </p>
+
+<p> So we need an extra "working" class, to sit between <strong>animal</strong>, on the one hand, and <strong>hen</strong> and <strong>cow</strong>, on the other; I call this a <strong>yielder</strong>. The definition is: </p>
+
+<pre class="examplecode"><font color="#FF0055">--class yielder(animal)</font>
+<font color="#0000FF">    export type </font><font color="#330033">yielder</font><font color="#880033">(</font><font color="#0000FF">object </font><font color="#330033">o</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">animal</font><font color="#880033">(</font><font color="#330033">o</font><font color="#880033">) </font><font color="#FF0055">-- 'animal' is the parent </font>
+<font color="#0000FF">        end type </font>
+<font color="#FF0055">    -- three properties inherited from 'animal' </font>
+<font color="#FF0055">    -- additionally: atom yield = 0 - initialised, but used as an accumulator </font>
+<font color="#0000FF">    include </font><font color="#330033">string.e </font><font color="#FF0055">-- for 'string' </font>
+<font color="#0000FF">    export function </font><font color="#330033">Yielder</font><font color="#880033">(</font><font color="#0000FF">integer </font><font color="#330033">legs=0,string sound=</font><font color="#330033">""</font><font color="#330033">,</font><font color="#0000FF">integer </font><font color="#330033">times=1</font><font color="#880033">) </font><font color="#FF0055">-- returns a 'yielder' instance </font>
+<font color="#330033">        yielder y = Animal</font><font color="#880033">(</font><font color="#330033">legs,sound,times</font><font color="#880033">) </font>
+<font color="#330033">        map:put</font><font color="#880033">(</font><font color="#330033">y,</font><font color="#330033">"yield"</font><font color="#330033">,0</font><font color="#880033">) </font><font color="#FF0055">-- add and initialise the new property </font>
+<font color="#0000FF">        return </font><font color="#330033">y </font>
+<font color="#0000FF">        end function </font>
+<font color="#FF0055">    -- additional method: yield - accumulates the yield </font>
+<font color="#0000FF">    export function </font><font color="#330033">yield</font><font color="#880033">(</font><font color="#330033">yielder y, </font><font color="#0000FF">atom </font><font color="#330033">z</font><font color="#880033">) </font><font color="#FF0055">-- managed accumulator - returns aggregate for reporting </font>
+<font color="#0000FF">        atom </font><font color="#330033">tot = map:get</font><font color="#880033">(</font><font color="#330033">y,</font><font color="#330033">"yield"</font><font color="#880033">) </font><font color="#330033">+ z </font>
+<font color="#330033">        map:put</font><font color="#880033">(</font><font color="#330033">y,</font><font color="#330033">"yield"</font><font color="#330033">,tot</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">tot </font>
+<font color="#0000FF">    end function </font>
+<font color="#FF0055">--end class</font>
+</pre>
+
+<p> We can then add class definitions for each of the animals on the farm. For the yielders: </p>
+
+<pre class="examplecode"><font color="#FF0055">--class cow(yielder)</font>
+<font color="#0000FF">    export type </font><font color="#330033">cow</font><font color="#880033">(</font><font color="#0000FF">object </font><font color="#330033">o</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">yielder</font><font color="#880033">(</font><font color="#330033">o</font><font color="#880033">) </font><font color="#FF0055">-- 'yielder' is the parent </font>
+<font color="#0000FF">        end type </font>
+<font color="#FF0055">    -- four properties inherited from 'yielder' </font>
+<font color="#0000FF">    include </font><font color="#330033">string.e </font><font color="#FF0055">-- for 'string' </font>
+<font color="#0000FF">    public function </font><font color="#330033">Cow</font><font color="#880033">(</font><font color="#0000FF">integer </font><font color="#330033">legs=4,string sound=</font><font color="#330033">"Moo"</font><font color="#330033">,</font><font color="#0000FF">integer </font><font color="#330033">times=1</font><font color="#880033">) </font><font color="#FF0055">-- returns a 'cow' instance </font>
+<font color="#0000FF">        return </font><font color="#330033">Yielder</font><font color="#880033">(</font><font color="#330033">legs,sound,times</font><font color="#880033">) </font>
+<font color="#0000FF">        end function </font>
+<font color="#FF0055">    -- 'says' method inherited from 'animal' </font>
+<font color="#FF0055">    -- additional method: milk - context-based alias for 'yield' </font>
+<font color="#0000FF">    export function </font><font color="#330033">milk</font><font color="#880033">(</font><font color="#330033">cow c, </font><font color="#0000FF">atom </font><font color="#330033">y</font><font color="#880033">) </font><font color="#FF0055">-- managed accumulator - returns aggregate for reporting </font>
+<font color="#0000FF">        return </font><font color="#330033">yield</font><font color="#880033">(</font><font color="#330033">c,y</font><font color="#880033">) </font>
+<font color="#0000FF">        end function </font>
+<font color="#FF0055">--end class</font>
+</pre>
+
+<pre class="examplecode"><font color="#FF0055">--class hen(yielder)</font>
+<font color="#0000FF">    export type </font><font color="#330033">hen</font><font color="#880033">(</font><font color="#0000FF">object </font><font color="#330033">o</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">yielder</font><font color="#880033">(</font><font color="#330033">o</font><font color="#880033">) </font><font color="#FF0055">-- 'yielder' is the parent </font>
+<font color="#0000FF">        end type </font>
+<font color="#FF0055">    -- four properties inherited from 'yielder' </font>
+<font color="#0000FF">    include </font><font color="#330033">string.e </font><font color="#FF0055">-- for 'string' </font>
+<font color="#0000FF">    public function </font><font color="#330033">Hen</font><font color="#880033">(</font><font color="#0000FF">integer </font><font color="#330033">legs=2,string sound=</font><font color="#330033">"Cluck"</font><font color="#330033">,</font><font color="#0000FF">integer </font><font color="#330033">times=2</font><font color="#880033">) </font><font color="#FF0055">-- returns 'hen' instance </font>
+<font color="#0000FF">        return </font><font color="#330033">Yielder</font><font color="#880033">(</font><font color="#330033">legs,sound,times</font><font color="#880033">) </font>
+<font color="#0000FF">        end function </font>
+<font color="#FF0055">    -- 'says' method inherited from 'animal' </font>
+<font color="#FF0055">    -- additional method: eggs - context-based alias for 'yield' </font>
+<font color="#0000FF">    export function </font><font color="#330033">eggs</font><font color="#880033">(</font><font color="#330033">hen h, </font><font color="#0000FF">atom </font><font color="#330033">y</font><font color="#880033">) </font><font color="#FF0055">-- managed accumulator - returns aggregate for reporting </font>
+<font color="#0000FF">        return </font><font color="#330033">yield</font><font color="#880033">(</font><font color="#330033">h,y</font><font color="#880033">) </font>
+<font color="#0000FF">        end function </font>
+<font color="#FF0055">--end class</font>
+</pre>
+
+<p> The others inherit directly from 'animal', so they resemble each other: </p>
+
+<pre class="examplecode"><font color="#FF0055">--class sheep(animal)</font>
+<font color="#0000FF">    export type </font><font color="#330033">sheep</font><font color="#880033">(</font><font color="#0000FF">object </font><font color="#330033">o</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">animal</font><font color="#880033">(</font><font color="#330033">o</font><font color="#880033">) </font><font color="#FF0055">-- 'animal' is the parent </font>
+<font color="#0000FF">        end type </font>
+<font color="#FF0055">    -- properties inherited from 'animal' </font>
+<font color="#0000FF">    include </font><font color="#330033">string.e </font><font color="#FF0055">-- for 'string' </font>
+<font color="#0000FF">    public function </font><font color="#330033">Sheep</font><font color="#880033">(</font><font color="#0000FF">integer </font><font color="#330033">legs=4,string sound=</font><font color="#330033">"Baa"</font><font color="#330033">,</font><font color="#0000FF">integer </font><font color="#330033">times=1</font><font color="#880033">) </font><font color="#FF0055">-- return 'sheep' instance </font>
+<font color="#0000FF">        return </font><font color="#330033">Animal</font><font color="#880033">(</font><font color="#330033">legs,sound,times</font><font color="#880033">) </font>
+<font color="#0000FF">        end function </font>
+<font color="#FF0055">--end class</font>
+</pre>
+
+<pre class="examplecode"><font color="#FF0055">--class pig(animal)</font>
+<font color="#0000FF">    export type </font><font color="#330033">pig</font><font color="#880033">(</font><font color="#0000FF">object </font><font color="#330033">o</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">animal</font><font color="#880033">(</font><font color="#330033">o</font><font color="#880033">) </font><font color="#FF0055">-- 'animal' is the parent </font>
+<font color="#0000FF">        end type </font>
+<font color="#FF0055">    -- properties inherited from 'animal' </font>
+<font color="#0000FF">    include </font><font color="#330033">string.e </font><font color="#FF0055">-- for 'string' </font>
+<font color="#0000FF">    public function </font><font color="#330033">Pig</font><font color="#880033">(</font><font color="#0000FF">integer </font><font color="#330033">legs=4,string sound=</font><font color="#330033">"Grunt"</font><font color="#330033">,</font><font color="#0000FF">integer </font><font color="#330033">times=2</font><font color="#880033">)  </font><font color="#FF0055">-- return 'pig' instance </font>
+<font color="#0000FF">        return </font><font color="#330033">Animal</font><font color="#880033">(</font><font color="#330033">legs,sound,times</font><font color="#880033">) </font>
+<font color="#0000FF">        end function </font>
+<font color="#FF0055">--end class</font>
+</pre>
+
+<pre class="examplecode"><font color="#FF0055">--class dog(animal)</font>
+<font color="#0000FF">    export type </font><font color="#330033">dog</font><font color="#880033">(</font><font color="#0000FF">object </font><font color="#330033">o</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">animal</font><font color="#880033">(</font><font color="#330033">o</font><font color="#880033">) </font><font color="#FF0055">-- 'animal' is the parent </font>
+<font color="#0000FF">        end type </font>
+<font color="#FF0055">    -- properties inherited from 'animal' </font>
+<font color="#0000FF">    include </font><font color="#330033">string.e </font><font color="#FF0055">-- for 'string' </font>
+<font color="#0000FF">    public function </font><font color="#330033">Dog</font><font color="#880033">(</font><font color="#0000FF">integer </font><font color="#330033">legs=4,string sound=</font><font color="#330033">"Woof"</font><font color="#330033">,</font><font color="#0000FF">integer </font><font color="#330033">times=1</font><font color="#880033">)  </font><font color="#FF0055">-- return 'dog' instance </font>
+<font color="#0000FF">        return </font><font color="#330033">Animal</font><font color="#880033">(</font><font color="#330033">legs,sound,times</font><font color="#880033">) </font>
+<font color="#0000FF">        end function </font>
+<font color="#FF0055">--end class</font>
+</pre>
+
+<pre class="examplecode"><font color="#FF0055">--class cat(animal)</font>
+<font color="#0000FF">    export type </font><font color="#330033">cat</font><font color="#880033">(</font><font color="#0000FF">object </font><font color="#330033">o</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">animal</font><font color="#880033">(</font><font color="#330033">o</font><font color="#880033">) </font><font color="#FF0055">-- 'animal' is the parent </font>
+<font color="#0000FF">        end type </font>
+<font color="#FF0055">    -- properties inherited from 'animal' </font>
+<font color="#0000FF">    include </font><font color="#330033">string.e </font><font color="#FF0055">-- for 'string' </font>
+<font color="#0000FF">    public function </font><font color="#330033">Cat</font><font color="#880033">(</font><font color="#0000FF">integer </font><font color="#330033">legs=4,string sound=</font><font color="#330033">"Miaew"</font><font color="#330033">,</font><font color="#0000FF">integer </font><font color="#330033">times=1</font><font color="#880033">) </font><font color="#FF0055">-- return 'cat' instance </font>
+<font color="#0000FF">        return </font><font color="#330033">Animal</font><font color="#880033">(</font><font color="#330033">legs,sound,times</font><font color="#880033">) </font>
+<font color="#0000FF">        end function </font>
+<font color="#FF0055">--end class</font>
+</pre>
+
+<p> Note that all of the specific animal (types) inherit the properties of all animals. </p>
+
+<p> Different animals can be distinguished by the sound each makes and the number of times the sound is typically uttered. </p>
+
+<p> Having a small farm and being very animal-conscious, the Giles have (pet) names for all their stock. </p>
+
+<p> Let's now take a look at how we create an instance. Try Daisy the Cow, who has no special features, whereas Frieda, the other cow is quite noisy, so: </p>
+
+<pre class="examplecode"><font color="#FF0055">-- chestnut.ex</font>
+<font color="#0000FF">include </font><font color="#330033">cow.e </font>
+<font color="#330033">cow Daisy = Cow</font><font color="#880033">() </font><font color="#FF0055">-- no special features </font>
+<font color="#330033">cow Frieda = Cow</font><font color="#880033">(</font><font color="#330033">,,2</font><font color="#880033">) </font>
+ 
+<font color="#0000FF">include </font><font color="#330033">io.e </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Daisy</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Daisy says %s"</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Frieda</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Frieda says %s"</font><font color="#880033">) </font>
+ 
+<font color="#330033">milk</font><font color="#880033">(</font><font color="#330033">Daisy,30</font><font color="#880033">) </font>
+<font color="#330033">milk</font><font color="#880033">(</font><font color="#330033">Daisy,25</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">milk</font><font color="#993333">(</font><font color="#330033">Daisy, 20</font><font color="#993333">)</font><font color="#330033">, </font><font color="#330033">"Daisy's yield is %d gallons."</font><font color="#880033">)</font>
+</pre>
+
+<p> which results in: 
+<div class="terminal">Daisy says Moo<br />
+ Frieda says Moo,Moo<br />
+ Daisy's yield is 75 gallons.</div>
+ </p>
+
+<p> We can do similar things with all the other animals, but before giving the final test data, note that the humans running the farm are also animals! </p>
+
+<p> We can modify our previous definition of a <strong>person</strong> as follows: </p>
+
+<pre class="examplecode"><font color="#FF0055">--class person(animal)</font>
+<font color="#0000FF">    export type </font><font color="#330033">person</font><font color="#880033">(</font><font color="#0000FF">object </font><font color="#330033">o</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">animal</font><font color="#880033">(</font><font color="#330033">o</font><font color="#880033">) </font><font color="#FF0055">-- the 'parent' </font>
+<font color="#0000FF">        end type </font>
+<font color="#FF0055">    -- three properties inherited from 'animal' </font>
+<font color="#0000FF">    include </font><font color="#330033">string.e </font><font color="#FF0055">-- for 'string' </font>
+<font color="#FF0055">    -- additionally: string title </font>
+<font color="#0000FF">    public include </font><font color="#330033">name.e </font><font color="#FF0055">-- for inheritance </font>
+<font color="#FF0055">    -- additionally: name name </font>
+<font color="#0000FF">    public include </font><font color="#330033">dob.e </font><font color="#FF0055">-- for inheritance </font>
+<font color="#FF0055">    -- additionally: dob dob </font>
+<font color="#0000FF">    public function </font><font color="#330033">Person</font><font color="#880033">(</font><font color="#330033">string title, string names, </font><font color="#0000FF">sequence </font><font color="#330033">birthday, </font><font color="#0000FF">integer </font><font color="#330033">legs=2,string sound=</font><font color="#330033">""</font><font color="#330033">,</font><font color="#0000FF">integer </font><font color="#330033">times=1</font><font color="#880033">) </font><font color="#FF0055">-- return 'person' instance </font>
+<font color="#330033">        person p = Animal</font><font color="#880033">(</font><font color="#330033">legs,sound,times</font><font color="#880033">) </font>
+<font color="#330033">        put</font><font color="#880033">(</font><font color="#330033">p, </font><font color="#330033">"title"</font><font color="#330033">, title</font><font color="#880033">) </font>
+<font color="#330033">        put</font><font color="#880033">(</font><font color="#330033">p, </font><font color="#330033">"name"</font><font color="#330033">, Name</font><font color="#993333">(</font><font color="#330033">names</font><font color="#993333">)</font><font color="#880033">) </font>
+<font color="#330033">        put</font><font color="#880033">(</font><font color="#330033">p, </font><font color="#330033">"dob"</font><font color="#330033">, Dob</font><font color="#993333">(</font><font color="#330033">birthday</font><font color="#993333">)</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">p </font>
+<font color="#0000FF">        end function </font>
+<font color="#0000FF">    constant </font><font color="#330033">VOID = 0 </font>
+<font color="#0000FF">    public function </font><font color="#330033">changeName</font><font color="#880033">(</font><font color="#330033">person p, string n</font><font color="#880033">) </font>
+<font color="#330033">        put</font><font color="#880033">(</font><font color="#330033">p,</font><font color="#330033">"name"</font><font color="#330033">,Name</font><font color="#993333">(</font><font color="#330033">n</font><font color="#993333">)</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">VOID </font>
+<font color="#0000FF">    end function </font>
+<font color="#0000FF">    public enum </font><font color="#330033">ASPTR=0,ASSTRING,INFULL </font>
+<font color="#0000FF">    public function </font><font color="#330033">getName</font><font color="#880033">(</font><font color="#330033">person p, </font><font color="#0000FF">integer </font><font color="#330033">asstr = ASPTR</font><font color="#880033">) </font>
+<font color="#0000FF">        switch </font><font color="#330033">asstr </font><font color="#0000FF">do </font>
+<font color="#0000FF">        case </font><font color="#330033">ASSTRING </font><font color="#0000FF">then return </font><font color="#330033">Dear</font><font color="#880033">(</font><font color="#330033">get</font><font color="#993333">(</font><font color="#330033">p,</font><font color="#330033">"name"</font><font color="#993333">)</font><font color="#880033">) </font>
+<font color="#0000FF">        case </font><font color="#330033">INFULL </font><font color="#0000FF">then return </font><font color="#330033">getTitle</font><font color="#880033">(</font><font color="#330033">p</font><font color="#880033">) </font><font color="#330033">&amp; </font><font color="#330033">' ' </font><font color="#330033">&amp; Dear</font><font color="#880033">(</font><font color="#330033">get</font><font color="#993333">(</font><font color="#330033">p,</font><font color="#330033">"name"</font><font color="#993333">)</font><font color="#880033">) </font>
+<font color="#0000FF">        case else return </font><font color="#330033">get</font><font color="#880033">(</font><font color="#330033">p,</font><font color="#330033">"name"</font><font color="#880033">) </font>
+<font color="#0000FF">        end switch </font>
+<font color="#0000FF">    end function </font>
+<font color="#0000FF">    public function </font><font color="#330033">getDob</font><font color="#880033">(</font><font color="#330033">person p, </font><font color="#0000FF">integer </font><font color="#330033">asstr = ASPTR</font><font color="#880033">) </font>
+<font color="#0000FF">        if </font><font color="#330033">asstr </font><font color="#0000FF">then return </font><font color="#330033">Display</font><font color="#880033">(</font><font color="#330033">get</font><font color="#993333">(</font><font color="#330033">p,</font><font color="#330033">"dob"</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">":"</font><font color="#330033">, 1</font><font color="#880033">) </font>
+<font color="#0000FF">        else return </font><font color="#330033">get</font><font color="#880033">(</font><font color="#330033">p,</font><font color="#330033">"dob"</font><font color="#880033">) </font>
+<font color="#0000FF">        end if </font>
+<font color="#0000FF">    end function </font>
+<font color="#0000FF">    public function </font><font color="#330033">getTitle</font><font color="#880033">(</font><font color="#330033">person p</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">get</font><font color="#880033">(</font><font color="#330033">p,</font><font color="#330033">"title"</font><font color="#880033">) </font>
+<font color="#0000FF">    end function </font>
+<font color="#0000FF">    public function </font><font color="#330033">promote</font><font color="#880033">(</font><font color="#330033">person p, string t</font><font color="#880033">) </font>
+<font color="#330033">        put</font><font color="#880033">(</font><font color="#330033">p,</font><font color="#330033">"title"</font><font color="#330033">, t</font><font color="#880033">) </font>
+<font color="#0000FF">        return </font><font color="#330033">VOID </font>
+<font color="#0000FF">    end function </font>
+<font color="#FF0055">--end class</font>
+</pre>
+
+<p> and add them to the general farm identification. </p>
+
+<p> Here is an example of reviewing <strong>animal</strong>s on Chestnut Farm: </p>
+
+<pre class="examplecode"><font color="#FF0055">-- chestnut.ex</font>
+ 
+<font color="#FF0055">-- example of classes derived from 'animal' </font>
+<font color="#FF0055">-- using Chestnut Farm as its context </font>
+ 
+<font color="#0000FF">include </font><font color="#330033">cow.e </font>
+<font color="#330033">cow Daisy = Cow</font><font color="#880033">() </font><font color="#FF0055">-- no special features </font>
+<font color="#330033">cow Frieda = Cow</font><font color="#880033">(</font><font color="#330033">,,2</font><font color="#880033">) </font>
+ 
+<font color="#0000FF">include </font><font color="#330033">io.e </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Daisy</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Daisy says %s"</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Frieda</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Frieda says %s"</font><font color="#880033">) </font>
+ 
+<font color="#330033">milk</font><font color="#880033">(</font><font color="#330033">Daisy,30</font><font color="#880033">) </font>
+<font color="#330033">milk</font><font color="#880033">(</font><font color="#330033">Daisy,25</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">milk</font><font color="#993333">(</font><font color="#330033">Daisy, 20</font><font color="#993333">)</font><font color="#330033">, </font><font color="#330033">"Daisy's yield is %d gallons."</font><font color="#880033">) </font>
+ 
+<font color="#0000FF">include </font><font color="#330033">hen.e </font>
+<font color="#330033">hen Matilda = Hen</font><font color="#880033">() </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Matilda</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Matilda says %s"</font><font color="#880033">) </font>
+<font color="#330033">eggs</font><font color="#880033">(</font><font color="#330033">Matilda,6</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">eggs</font><font color="#993333">(</font><font color="#330033">Matilda, 4</font><font color="#993333">)</font><font color="#330033">, </font><font color="#330033">"Matilda's yield is %d eggs."</font><font color="#880033">) </font>
+ 
+<font color="#0000FF">include </font><font color="#330033">cat.e </font>
+<font color="#330033">cat Rufus = Cat</font><font color="#880033">() </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Rufus</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Rufus says %s"</font><font color="#880033">) </font>
+<font color="#330033">cat Finn = Cat</font><font color="#880033">(</font><font color="#330033">3,,2</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Finn</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Finn says %s"</font><font color="#880033">) </font>
+ 
+<font color="#0000FF">include </font><font color="#330033">pig.e </font>
+<font color="#330033">pig Nigel = Pig</font><font color="#880033">() </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Nigel</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Nigel says %s"</font><font color="#880033">) </font>
+<font color="#330033">pig Boris = Pig</font><font color="#880033">(</font><font color="#330033">,</font><font color="#330033">"Woffle"</font><font color="#330033">,4</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Boris</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Boris says %s"</font><font color="#880033">) </font>
+ 
+<font color="#0000FF">include </font><font color="#330033">dog.e </font>
+<font color="#330033">dog Fido = Dog</font><font color="#880033">() </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Fido</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Fido says %s"</font><font color="#880033">) </font>
+<font color="#330033">dog Lucinda = Dog</font><font color="#880033">(</font><font color="#330033">,,2</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Lucinda</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Lucinda says %s"</font><font color="#880033">) </font>
+ 
+<font color="#0000FF">include </font><font color="#330033">sheep.e </font>
+<font color="#330033">sheep Napoleon = Sheep</font><font color="#880033">() </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Napoleon</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Napoleon says %s"</font><font color="#880033">) </font>
+<font color="#330033">sheep Josephine = Sheep</font><font color="#880033">(</font><font color="#330033">,,3</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Josephine</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Josephine says %s"</font><font color="#880033">) </font>
+ 
+<font color="#0000FF">include </font><font color="#330033">person.e </font>
+<font color="#330033">person Giles = Person</font><font color="#880033">(</font><font color="#330033">"Farmer"</font><font color="#330033">,</font><font color="#330033">"William Giles"</font><font color="#330033">,</font><font color="#993333">{</font><font color="#330033">1961,2,28</font><font color="#993333">}</font><font color="#330033">,,</font><font color="#330033">"Well"</font><font color="#330033">,2</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Giles</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"Giles says %s"</font><font color="#880033">) </font>
+<font color="#330033">writef</font><font color="#880033">(</font><font color="#330033">getName</font><font color="#993333">(</font><font color="#330033">Giles,INFULL</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"%s"</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">Age</font><font color="#993333">(</font><font color="#330033">getDob</font><font color="#0000FF">(</font><font color="#330033">Giles</font><font color="#0000FF">)</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">" is %d years old."</font><font color="#880033">) </font>
+<font color="#330033">person Mary = Person</font><font color="#880033">(</font><font color="#330033">"Mrs"</font><font color="#330033">,</font><font color="#330033">"Mary Louisa Giles"</font><font color="#330033">,</font><font color="#993333">{</font><font color="#330033">1963,11,4</font><font color="#993333">}</font><font color="#330033">,,</font><font color="#330033">"Oh,dear"</font><font color="#880033">) </font>
+<font color="#330033">writef</font><font color="#880033">(</font><font color="#330033">getName</font><font color="#993333">(</font><font color="#330033">Mary,INFULL</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"%s"</font><font color="#880033">) </font>
+<font color="#330033">writef</font><font color="#880033">(</font><font color="#330033">Age</font><font color="#993333">(</font><font color="#330033">getDob</font><font color="#0000FF">(</font><font color="#330033">Mary</font><font color="#0000FF">)</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">" is %d years old, "</font><font color="#880033">) </font>
+<font color="#330033">writefln</font><font color="#880033">(</font><font color="#330033">says</font><font color="#993333">(</font><font color="#330033">Mary</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"and says %s."</font><font color="#880033">)</font>
+</pre>
+
+<p> You might need to edit <em>eu.cfg</em> if you have moved stuff around but you should get the following output: </p>
+
+<p> 
+<div class="terminal">Daisy says Moo<br />
+ Frieda says Moo,Moo<br />
+ Daisy's yield is 75 gallons.<br />
+ Matilda says Cluck,Cluck<br />
+ Matilda's yield is 10 eggs.<br />
+ Rufus says Miaew<br />
+ Finn says Miaew,Miaew<br />
+ Nigel says Grunt,Grunt<br />
+ Boris says Woffle,Woffle,Woffle,Woffle<br />
+ Fido says Woof<br />
+ Lucinda says Woof,Woof<br />
+ Napoleon says Baa<br />
+ Josephine says Baa,Baa,Baa<br />
+ Giles says Well,Well<br />
+ Farmer William Giles is 60 years old.<br />
+ Mrs Mary Giles is 58 years old, and says Oh,dear.</div>
+ </p>
+
+<p> I hope that you have followed this detailed example, noted the style I have adopted for defining classes, and understand the power of such a simple rendering of Euphoria to produce a "tight" version of OOP. </p>
+
+<p> Enjoy</p>
+</body></html>
