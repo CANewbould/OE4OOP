@@ -4,24 +4,28 @@
 -- Testbed for the "OOP" implementation of OE (OE4OOP)
 -- augmented by dot-notation, delivered by pre-processor 'dot.ex'
 --------------------------------------------------------------------------------
---Version: 4.1.0.1
---Date: 2022.03.18
+--Version: 4.1.0.2
+--Date: 2022.03.28
 --Author: C A Newbould
 --Status: operational; complete
 --Changes:
---* changed to reflect changes in 'person'
+--* changed ##show## to use full dot notation
 --------------------------------------------------------------------------------
 -- Interface
 --------------------------------------------------------------------------------
 include person.e -- for class definition
+include dob.e -- for 'dob'
 --------------------------------------------------------------------------------
 -- Support routine
 --------------------------------------------------------------------------------
 procedure show(person p)
+    dob d = p.getDob() -- [ASPTR]
     printf(1,"%s was born on %s; so s/he is %d years old\n",
-                {getName(p,INFULL),
-                 getDob(p,ASSTRING),
-                 Age(getDob(p))})
+                {
+                p.getName(INFULL),
+                p.getDob(ASSTRING),
+                d.Age()
+                })
 end procedure
 --------------------------------------------------------------------------------
 -- Illustration
@@ -35,6 +39,13 @@ person liz = Person("Dame","Elizabeth Taylor", {1932,2,27})
 liz.show()
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--Version: 4.1.0.1
+--Date: 2022.03.18
+--Author: C A Newbould
+--Status: operational; complete
+--Changes:
+--* changed to reflect changes in 'person'
 --------------------------------------------------------------------------------
 --Version: 4.0.5.0
 --Date: 2021.10.27
