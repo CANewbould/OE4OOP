@@ -31,7 +31,7 @@
 --------------------------------------------------------------------------------
 include circle.e -- for 'Area', 'circle', 'Circle', 'Perimeter'
 circle c = Circle(20)
-include io.e -- for 'writef','writefln'
+include io.e -- for 'display','writef','writefln'
 writef(Area(c),"A circle of radius 20 has an area of %.2f ")
 writefln(Perimeter(c), "and a perimeter of %.2f.")
 include rectangle.e -- for 'Area', 'Perimeter', 'rectangle', 'Rectangle'

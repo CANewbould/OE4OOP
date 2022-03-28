@@ -32,6 +32,10 @@
 --------------------------------------------------------------------------------
 include date.e -- for 'Date', 'Month', 'ymd'
 ymd ae = Date({1897,3,14})
+--------------------------------------------------------------------------------
+-- Choose output destination
+--------------------------------------------------------------------------------
+with define IUP
 include io.e -- for 'write', 'writef', 'writefln', 'writeln'
 writef(Month(ae,TRUE), "Albert Einstein was born in %s;")
 writefln(DayInYear(ae)," on the %d day in that year.")

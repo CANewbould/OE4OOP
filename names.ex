@@ -31,7 +31,7 @@
 --
 --------------------------------------------------------------------------------
 include name.e -- for 'Dear', 'name', 'Name'
-include ../CANOE/io.e -- for 'display','writefln'
+include io.e -- for 'display','writefln'
 --------------------------------------------------------------------------------
 --/*
 --=== Execution: eui shapes

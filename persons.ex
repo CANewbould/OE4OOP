@@ -35,7 +35,7 @@
 --------------------------------------------------------------------------------
 include person.e
 person me = Person("Dr","Charles Arthur Newbould",{1943,5,16})
-include ../CANOE/io.e -- for 'display','writef','writefln','writeln'
+include io.e -- for 'display','writef','writefln','writeln'
 writef(getTitle(me),"Hello, %s ")
 writef(Dear(getName(me)),"%s - ")
 writefln(Age(getDob(me)),"you are %d!")
